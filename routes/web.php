@@ -14,9 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', [
+        'api_url' => env('API_URL'),
+        'api_user' => env('API_USER'),
+    ]);
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::post('/store', [Postgen\Generator\Controllers\PostController::class, 'store'])->name('store');
