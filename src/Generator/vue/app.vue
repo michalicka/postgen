@@ -130,6 +130,7 @@ export default {
             axios.post('/store', {
                 title: this.title,
                 content: this.content,
+                model: this.model,
             }).then(({data}) => {
                 //console.log(data);
             });

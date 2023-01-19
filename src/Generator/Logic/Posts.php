@@ -7,12 +7,12 @@ use Illuminate\Support\Str;
 
 class Posts
 {
-    public static function store($title, $content)
+    public static function store($title, $content, $model)
     {
         $title = $title ?: Str::words($content, 10, '...');
         $slug = self::slug($title);
 
-        return Post::create(compact('title', 'content', 'slug'));
+        return Post::create(compact('title', 'content', 'slug', 'model'));
     }
 
     private static function slug($title)

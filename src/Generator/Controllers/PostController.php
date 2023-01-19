@@ -11,11 +11,10 @@ class PostController extends Controller
     {
         $title = request('title');
         $content = request('content');
+        $model = request('model');
 
-        if ($content) {
-            Posts::store($title, $content);
-        }
+        $post = $content ? Posts::store($title, $content, $model) : null;
 
-        return response(compact('title', 'content'));
+        return response($post ? $post->only('slug') : []);
     }
 }

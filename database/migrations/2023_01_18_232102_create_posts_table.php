@@ -20,7 +20,9 @@ class CreatePostsTable extends Migration
             $table->longtext('content');
             $table->string('status')->default('draft');
             $table->string('slug')->unique();
+            $table->string('model')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')->on('users')->references('id');
         });
