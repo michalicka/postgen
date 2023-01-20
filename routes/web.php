@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArtisanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::post('/store', [Postgen\Generator\Controllers\PostController::class, 'store'])->name('store');
 Route::post('/rate', [Postgen\Generator\Controllers\PostController::class, 'rate'])->name('rate');
+
+Route::get('/artisan/down', [ArtisanController::class, 'down'])->name('artisan.down');
+Route::get('/artisan/deploy', [ArtisanController::class, 'deploy'])->name('artisan.deploy');

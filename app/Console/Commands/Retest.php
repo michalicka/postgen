@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Postgen\Generator\Models\Post;
 
 class Retest extends Command
 {
@@ -12,6 +11,5 @@ class Retest extends Command
 
     public function handle()
     {
-        $post = Post::find(8);
     }
 }
