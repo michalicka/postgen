@@ -6,18 +6,19 @@
                     <div class="card-body">
 
                         <div class=" mb-3">
-                            <label for="title" class="form-label">Title of the article:</label>
+                            <label for="title" class="form-label">Dotaz nebo Příkaz:</label>
                             <div class="input-group">
                               <input ref="title" id="title" type="text" class="form-control" v-model="title" @keydown.enter="submit">
-                              <button type="button" class="btn btn-secondary" @click="submit"><arrow /></button>
+                              <button type="button" class="btn btn-secondary" title="Odeslat" @click="submit"><arrow /></button>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                          <label for="content" class="form-label">Content of the article:</label>
+                          <label for="content" class="form-label">Odpověď:</label>
                           <textarea ref="content" id="content" :style="style" class="form-control" v-model="content" @keydown="resize"></textarea>
                         </div>
 
+                        <rate v-if="id" v-model="id" />
                     </div>
                 </div>
             </div>
@@ -26,55 +27,12 @@
 </template>
 
 <script>
-async function *parseJsonStream(readableStream) {
-    const regexp = new RegExp('({.*})', 'gms');
-    for await (const line of readLines(readableStream.getReader())) {
-        let trimmedLine = line.trim().replace(/,$/, '');
-        trimmedLine = regexp.test(trimmedLine) ? trimmedLine.match(regexp)[0] : trimmedLine;
-
-        if (trimmedLine !== '[]' && trimmedLine !== '\n') {
-            try {
-                yield JSON.parse(trimmedLine);
-            } catch (e) {
-            }
-        }
-    }
-}
-
-async function *readLines(reader) {
-    const textDecoder = new TextDecoder();
-    let partOfLine = '';
-    for await (const chunk of readChunks(reader)) {
-        const chunkText = textDecoder.decode(chunk);
-        const chunkLines = chunkText.split('\n');
-        if (chunkLines.length === 1) {
-            partOfLine += chunkLines[0];
-        } else if (chunkLines.length > 1) {
-            yield partOfLine + chunkLines[0];
-            for (let i=1; i < chunkLines.length - 1; i++) {
-                yield chunkLines[i];
-            }
-            partOfLine = chunkLines[chunkLines.length - 1];
-        }
-    }
-}
-
-function readChunks(reader) {
-    return {
-        async* [Symbol.asyncIterator]() {
-            let readResult = await reader.read();
-            while (!readResult.done) {
-                yield readResult.value;
-                readResult = await reader.read();
-            }
-        },
-    };
-}
-
-import Arrow from './arrow.vue';
+import parseJsonStream from './stream.js';
+import Arrow from '../../UI/vue/Icons/arrow';
+import Rate from './rate';
 
 export default {
-    components: { Arrow },
+    components: { Arrow, Rate },
     props: {
         apiUrl: {
             type: String,
@@ -87,6 +45,7 @@ export default {
     },
     data() {
         return {
+            id: null,
             title: '',
             content: '',
             height: 24,
@@ -107,8 +66,12 @@ export default {
             const q=this.title || this.content;
             if (q) this.process(q);
         },
-        process(q) {
+        clean() {
+            this.id = null;
             this.content = '';
+        },
+        process(q) {
+            this.clean();
             fetch(`${this.apiUrl}/?q=${encodeURIComponent(q)}&userid=${this.apiUser}`)
                 .then(async (response) => {
                     // response.body is a ReadableStream
@@ -132,7 +95,7 @@ export default {
                 content: this.content,
                 model: this.model,
             }).then(({data}) => {
-                //console.log(data);
+                this.id = data.id;
             });
         }
     },

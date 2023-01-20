@@ -11,8 +11,9 @@ class Posts
     {
         $title = $title ?: Str::words($content, 10, '...');
         $slug = self::slug($title);
+        $user_id = auth()->check() ? auth()->user()->id : null;
 
-        return Post::create(compact('title', 'content', 'slug', 'model'));
+        return Post::create(compact('user_id', 'title', 'content', 'slug', 'model'));
     }
 
     private static function slug($title)
@@ -26,5 +27,23 @@ class Posts
         }
 
         return $slug;
+    }
+
+    public static function like($id)
+    {
+        if ($post = Post::find($id)) {
+            $post->update([
+                'likes' => $post->likes ? $post->likes + 1 : 1
+            ]);
+        }
+    }
+
+    public static function dislike($id)
+    {
+        if ($post = Post::find($id)) {
+            $post->update([
+                'dislikes' => $post->dislikes ? $post->dislikes - 1 : -1
+            ]);
+        }
     }
 }

@@ -25,3 +25,4 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::post('/store', [Postgen\Generator\Controllers\PostController::class, 'store'])->name('store');
+Route::post('/rate', [Postgen\Generator\Controllers\PostController::class, 'rate'])->name('rate');
