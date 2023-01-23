@@ -10,6 +10,8 @@ class Posts
     public static function store($title, $content, $model)
     {
         $title = $title ?: Str::words($content, 10, '...');
+        $title = Str::of($title)->contains(':') ? trim(Str::after($title, ':')) : $title;
+        $title = preg_match('/"([^["]+)"/', $title, $match) ? $match[1] : $title;
         $slug = self::slug($title);
         $user_id = auth()->check() ? auth()->user()->id : null;
 

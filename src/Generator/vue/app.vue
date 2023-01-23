@@ -6,15 +6,15 @@
                     <div class="card-body">
 
                         <div class=" mb-3">
-                            <label for="title" class="form-label">Dotaz nebo Příkaz:</label>
+                            <label for="title" class="form-label">Zadej dotaz nebo úkol:</label>
                             <div class="input-group">
                               <input ref="title" id="title" type="text" class="form-control" v-model="title" @keydown.enter="submit">
                               <button type="button" class="btn btn-secondary" title="Odeslat" @click="submit"><arrow /></button>
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                          <label for="content" class="form-label">Odpověď:</label>
+                        <div v-show="content" class="mb-3">
+                          <label for="content" class="form-label">Doktor Vševěd odpovídá:</label>
                           <textarea ref="content" id="content" :style="style" class="form-control" v-model="content" @keydown="resize"></textarea>
                         </div>
 
