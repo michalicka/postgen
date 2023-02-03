@@ -72,7 +72,7 @@ export default {
         },
         process(q) {
             this.clean();
-            fetch(`${this.apiUrl}/?q=${encodeURIComponent(q)}&userid=${this.apiUser}`)
+            fetch(`${this.apiUrl}?q=${encodeURIComponent(q)}&userid=${this.apiUser}`)
                 .then(async (response) => {
                     // response.body is a ReadableStream
                     for await (const chunk of this.parseJsonStream(response.body)) {
