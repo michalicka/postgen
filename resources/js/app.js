@@ -20,6 +20,8 @@ window.Vue = require('vue').default;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 require('../../src/Generator/index.js');
+require('../../src/Moderator/index.js');
+require('../views/components/index.js');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -5,7 +5,7 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <div class=" mb-3">
+                        <div class="mb-3">
                             <label for="title" class="form-label">Zadej dotaz nebo úkol:</label>
                             <div class="input-group">
                               <input ref="title" id="title" type="text" class="form-control" v-model="title" @keydown.enter="submit">

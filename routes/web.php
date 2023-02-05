@@ -30,3 +30,7 @@ Route::post('/rate', [Postgen\Generator\Controllers\PostController::class, 'rate
 
 Route::get('/artisan/down', [ArtisanController::class, 'down'])->name('artisan.down');
 Route::get('/artisan/deploy', [ArtisanController::class, 'deploy'])->name('artisan.deploy');
+
+//Route::middleware(['auth'])->group(function () {
+    Route::get('/posts/{id}/edit', [Postgen\Moderator\Controllers\PostController::class, 'edit'])->name('posts.edit');
+//});

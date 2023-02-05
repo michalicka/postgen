@@ -23,6 +23,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('home', [
+            'api_url' => env('API_URL'),
+            'api_user' => env('API_USER'),
+        ]);
     }
 }
