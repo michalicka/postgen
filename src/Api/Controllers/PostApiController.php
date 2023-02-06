@@ -10,12 +10,17 @@ class PostApiController extends Controller
 {
     public function list()
     {
-        $posts = Post::select(['id', 'title', 'status', 'likes', 'created_at'])
-            ->where('status', 'draft')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $status = request('status');
+        $search = request('search');
+        $page = request('page');
 
-        return response(compact('posts'));
+        $query = Post::select(['id', 'title', 'status', 'likes', 'dislikes', 'created_at'])
+            ->orderBy('created_at', 'desc');
+
+        if ($status) $query->where('status', $status);
+        if ($search) $query->where('title', 'like', "%$search%");
+
+        return $query->paginate(20);
     }
 
     public function get(int $id)

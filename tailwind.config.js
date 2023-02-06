@@ -5,7 +5,7 @@ module.exports = {
     "./resources/**/*.blade.php",
     './src/**/*.blade.php',
     './src/**/*.vue',
-    './src/**/*.js',
+    './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
   ],
   theme: {
     extend: {},

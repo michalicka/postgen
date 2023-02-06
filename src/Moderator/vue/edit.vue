@@ -3,6 +3,12 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page"><a href="/home">Back</a></li>
+                  </ol>
+                </nav>
+
                 <div v-if="post" class="card">
                     <div class="card-body">
                         <div class="mb-3">
@@ -17,10 +23,10 @@
                             <label for="content" class="form-label">Text:</label>
                             <textarea rows="15" class="form-control" v-model="post.content" />
                         </div>
-                        <div class="mb-3">
-                            <button type="button" class="btn btn-primary" @click="update">Update</button>
+                        <div class="mb-3 flex w-full justify-between">
                             <button type="button" class="btn btn-danger" @click="remove">Delete</button>
-                            <button type="button" class="btn btn-success" @click="publish">Publish</button>
+                            <button type="button" class="btn btn-primary" @click="update">Update</button>
+                            <button v-if="post.status !== 'publish'" type="button" class="btn btn-success" @click="publish">Publish</button>
                         </div>
                     </div>
                 </div>
