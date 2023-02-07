@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Doktor Vševěd</title>
+    <title>{{ __('PostGen') }}</title>
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
@@ -25,7 +25,7 @@
             <div class="container flex items-center justify-between">
                 <div>
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        Doktor Vševěd
+                        {{ __('PostGen') }}
                     </a>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -42,6 +42,9 @@
                             </div>
                         @endif
                     @else
+                        <div class="nav-item">
+                            <a class="nav-link" href="{{ route('home') }}">{{ __('Moderate') }}</a>
+                        </div>
                         <div class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}

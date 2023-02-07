@@ -16,8 +16,8 @@
                           <label class="btn btn-outline-primary" for="status_publish" @click="updateStatus('publish')">Publish</label>
                         </div>
                         <div class="input-group">
-                          <input type="text" class="form-control bg-white" placeholder="Search..." aria-label="Search" aria-describedby="search" v-model="filters.search" @keydown.enter="loadData">
-                          <button type="button" class="btn btn-secondary" title="Vyhledat" @click="loadData"><search-icon /></button>
+                          <input type="text" class="form-control bg-white" placeholder="Search..." aria-label="Search" aria-describedby="search" v-model="filters.search" @keydown.enter="search">
+                          <button type="button" class="btn btn-secondary" title="Vyhledat" @click="search"><search-icon /></button>
                         </div>
                     </div>
 
@@ -49,8 +49,18 @@
                         </table>
                     </div>
                     <div class="flex items-center justify-between mt-2">
-                        <div><button v-if="filters.page > 1" type="button" class="btn btn-secondary" @click="updatePage(-1)">&lt; Prev</button></div>
-                        <div><button v-if="filters.page < lastPage" type="button" class="btn btn-secondary" @click="updatePage(1)">Next &gt;</button></div>
+                        <div><button v-if="filters.page > 1" type="button" class="btn btn-secondary" @click="updatePage(-1)">
+                            <div class="flex items-center space-x-2">
+                                <prev-icon />
+                                <span>Prev</span>
+                            </div>
+                        </button></div>
+                        <div><button v-if="filters.page < lastPage" type="button" class="btn btn-secondary" @click="updatePage(1)">
+                            <div class="flex items-center space-x-2">
+                                <span>Next</span>
+                                <next-icon />
+                            </div>
+                        </button></div>
                     </div>
 
                 </div>
@@ -62,9 +72,11 @@
 <script>
 import moment from 'moment'
 import SearchIcon from '../../UI/vue/Icons/search';
+import PrevIcon from '../../UI/vue/Icons/prev';
+import NextIcon from '../../UI/vue/Icons/next';
 
 export default {
-    components: { SearchIcon },
+    components: { SearchIcon, PrevIcon, NextIcon },
     data() {
         return {
             posts: [],
@@ -92,11 +104,16 @@ export default {
             return moment(date).fromNow();
         },
         updateStatus(status) {
+            this.filters.page = 1;
             this.filters.status = status;
             this.loadData();
         },
         updatePage(increment) {
             this.filters.page += increment;
+            this.loadData();
+        },
+        search() {
+            this.filters.page = 1;
             this.loadData();
         }
     },
