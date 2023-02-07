@@ -54,9 +54,9 @@ class Posts
         $post = Post::find($id);
 
         $post->update([
-            'title' => $title,
-            'slug' => $slug,
-            'content' => $content,
+            'title' => strip_tags($title),
+            'slug' => Str::slug($slug),
+            'content' => strip_tags($content, "<b><strong><i><em><h2><h3><a>"),
         ]);
 
         return $post;

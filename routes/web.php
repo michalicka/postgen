@@ -23,14 +23,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::post('/store', [Postgen\Generator\Controllers\PostController::class, 'store'])->name('store');
 Route::post('/rate', [Postgen\Generator\Controllers\PostController::class, 'rate'])->name('rate');
 
 Route::get('/artisan/down', [ArtisanController::class, 'down'])->name('artisan.down');
 Route::get('/artisan/deploy', [ArtisanController::class, 'deploy'])->name('artisan.deploy');
 
-//Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/posts/{id}/edit', [Postgen\Moderator\Controllers\PostController::class, 'edit'])->name('posts.edit');
-//});
+});
