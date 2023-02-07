@@ -20,6 +20,10 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+    <script>
+        window._locale = '{{ app()->getLocale() }}';
+        window._translations = {!! cache('translations') !!};
+    </script>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container flex items-center justify-between">

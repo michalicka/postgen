@@ -7,17 +7,17 @@
                     <div class="flex justify-between items-center space-x-4">
                         <div class="btn-group" role="group" aria-label="Status">
                           <input type="radio" class="btn-check" name="status" id="status_all" autocomplete="off" :checked="filters.status === ''">
-                          <label class="btn btn-outline-primary" for="status_all" @click="updateStatus('')">All</label>
+                          <label class="btn btn-outline-primary" for="status_all" @click="updateStatus('')">{{ __('All') }}</label>
 
                           <input type="radio" class="btn-check" name="status" id="status_draft" autocomplete="off" :checked="filters.status === 'draft'">
-                          <label class="btn btn-outline-primary" for="status_draft" @click="updateStatus('draft')">Draft</label>
+                          <label class="btn btn-outline-primary" for="status_draft" @click="updateStatus('draft')">{{ __('Draft') }}</label>
 
                           <input type="radio" class="btn-check" name="status" id="status_publish" autocomplete="off" :checked="filters.status === 'publish'">
-                          <label class="btn btn-outline-primary" for="status_publish" @click="updateStatus('publish')">Publish</label>
+                          <label class="btn btn-outline-primary" for="status_publish" @click="updateStatus('publish')">{{ __('Publish') }}</label>
                         </div>
                         <div class="input-group">
-                          <input type="text" class="form-control bg-white" placeholder="Search..." aria-label="Search" aria-describedby="search" v-model="filters.search" @keydown.enter="search">
-                          <button type="button" class="btn btn-secondary" title="Vyhledat" @click="search"><search-icon /></button>
+                          <input type="text" class="form-control bg-white" :placeholder="__('Search')+'...'" aria-describedby="search" v-model="filters.search" @keydown.enter="search">
+                          <button type="button" class="btn btn-secondary" :title="__('Search')" @click="search"><search-icon /></button>
                         </div>
                     </div>
 
@@ -36,7 +36,7 @@
                                         <a :href="link(item.id)">{{item.title}}</a>
                                     </td>
                                     <td class="table-data">
-                                        {{item.status}}
+                                        {{__(item.status)}}
                                     </td>
                                     <td class="table-data">
                                         {{item.likes - item.dislikes}}
@@ -79,6 +79,12 @@ export default {
     components: { SearchIcon, PrevIcon, NextIcon },
     data() {
         return {
+            headers: [
+                this.__('Title'),
+                this.__('Status'),
+                this.__('Likes'),
+                this.__('Created'),
+            ],
             posts: [],
             filters: {
                 status: '',
@@ -121,13 +127,4 @@ export default {
         this.loadData();
     }
 }
-</script>
-
-<script setup>
-const headers = [
-    'Title',
-    'Status',
-    'Likes',
-    'Created',
-];
 </script>

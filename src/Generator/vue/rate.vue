@@ -1,7 +1,7 @@
 <template>
     <div>
-        <label class="form-label">Hodnocení:</label>
-        <div class="btn-group" role="group" aria-label="Basic example">
+        <label class="form-label">{{ __('Rating') }}:</label>
+        <div class="btn-group" role="group">
             <button type="button" class="btn btn-light" :class="{ 'active': type === 'like' }" @click="rate('like')">
                 <like style="width:20px; height:20px;" />
             </button>

@@ -5,28 +5,28 @@
 
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href="/home">Back</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="/home">{{ __('Back') }}</a></li>
                   </ol>
                 </nav>
 
                 <div v-if="post" class="card">
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Název:</label>
+                            <label for="title" class="form-label">{{ __('Title') }}:</label>
                             <input type="text" class="form-control" v-model="post.title">
                         </div>
                         <div class="mb-3">
-                            <label for="slug" class="form-label">Slug:</label>
+                            <label for="slug" class="form-label">{{ __('Slug') }}:</label>
                             <input type="text" class="form-control" v-model="post.slug">
                         </div>
                         <div class="mb-3">
-                            <label for="content" class="form-label">Text:</label>
+                            <label for="content" class="form-label">{{ __('Text') }}:</label>
                             <textarea rows="15" class="form-control" v-model="post.content" />
                         </div>
                         <div class="mb-3 flex w-full justify-between">
-                            <button type="button" class="btn btn-danger" @click="remove">Delete</button>
-                            <button type="button" class="btn btn-primary" @click="update">Update</button>
-                            <button v-if="post.status !== 'publish'" type="button" class="btn btn-success" @click="publish">Publish</button>
+                            <button type="button" class="btn btn-danger" @click="remove">{{ __('Delete') }}</button>
+                            <button type="button" class="btn btn-primary" @click="update">{{ __('Update') }}</button>
+                            <button v-if="post.status !== 'published'" type="button" class="btn btn-success" @click="publish">{{ __('Publish') }}</button>
                         </div>
                     </div>
                 </div>

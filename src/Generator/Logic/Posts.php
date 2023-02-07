@@ -71,7 +71,7 @@ class Posts
 
     public static function publish(Post $post): bool
     {
-        $post->update(['status' => 'publish']);
+        $post->update(['status' => 'published']);
 
         return true;
     }

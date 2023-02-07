@@ -6,15 +6,15 @@
                     <div class="card-body">
 
                         <div class="mb-3">
-                            <label for="title" class="form-label">Zadej dotaz nebo úkol:</label>
+                            <label for="title" class="form-label">{{ __('Enter question or task') }}:</label>
                             <div class="input-group">
                               <input ref="title" id="title" type="text" class="form-control" v-model="title" @keydown.enter="submit">
-                              <button type="button" class="btn btn-secondary" title="Odeslat" @click="submit"><arrow /></button>
+                              <button type="button" class="btn btn-secondary" :title="__('Send')" @click="submit"><arrow /></button>
                             </div>
                         </div>
 
                         <div v-show="content" class="mb-3">
-                          <label for="content" class="form-label">Doktor Vševěd odpovídá:</label>
+                          <label for="content" class="form-label">{{ __('Answer') }}:</label>
                           <textarea ref="content" id="content" :style="style" class="form-control" v-model="content" @keydown="resize"></textarea>
                         </div>
 
