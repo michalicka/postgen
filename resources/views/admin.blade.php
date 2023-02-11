@@ -2,6 +2,6 @@
 
 @section('content')
 <div>
-    <moderate></moderate>
+    <admin></admin>
 </div>
 @endsection

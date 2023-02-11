@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "bootstrap-icons": "^1.10.3",
-        "moment": "^2.29.4"
+        "moment": "^2.29.4",
+        "vue-toast-notification": "^0.6.3"
     }
 }

@@ -30,6 +30,11 @@ Route::get('/artisan/down', [ArtisanController::class, 'down'])->name('artisan.d
 Route::get('/artisan/deploy', [ArtisanController::class, 'deploy'])->name('artisan.deploy');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
     Route::get('/posts/{id}/edit', [Postgen\Moderator\Controllers\PostController::class, 'edit'])->name('posts.edit');
 });
+
+Route::get('/wiki/', [Postgen\UI\Controllers\ViewController::class, 'index'])->name('index');
+Route::get('/wiki/{slug}/', [Postgen\UI\Controllers\ViewController::class, 'get'])->name('get');
+Route::get('/archiv/{year}/{month}/', [Postgen\UI\Controllers\ViewController::class, 'archive'])->name('archive');
+Route::get('/author/{author}', [Postgen\UI\Controllers\ViewController::class, 'author'])->name('author');

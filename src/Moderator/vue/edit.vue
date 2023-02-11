@@ -5,7 +5,7 @@
 
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href="/home">{{ __('Back') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="/admin">{{ __('Back') }}</a></li>
                   </ol>
                 </nav>
 
@@ -63,13 +63,15 @@ export default {
                     content: this.post.content,
                 })
                 .then(({data}) => {
+                    this.$toast.success(this.__('Post updated'));
                     this.loadData();
                 });
         },
         remove() {
             axios.post(`/api/posts/${this.id}/remove`)
                 .then(({data}) => {
-                    window.location = '/home';
+                    this.$toast.success(this.__('Post removed'));
+                    window.location = '/admin';
                 });
         },
         publish() {
@@ -79,7 +81,8 @@ export default {
                     content: this.post.content,
                 })
                 .then(({data}) => {
-                    window.location = '/home';
+                    this.$toast.success(this.__('Post published'));
+                    window.location = '/admin';
                 });
         },
     },

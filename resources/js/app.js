@@ -1,3 +1,6 @@
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -9,6 +12,8 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 
 Vue.mixin(require('./trans'));
+
+Vue.use(VueToast);
 
 /**
  * The following block of code may be used to automatically register your

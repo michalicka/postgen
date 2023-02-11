@@ -13,7 +13,7 @@
                           <label class="btn btn-outline-primary" for="status_draft" @click="updateStatus('draft')">{{ __('Draft') }}</label>
 
                           <input type="radio" class="btn-check" name="status" id="status_publish" autocomplete="off" :checked="filters.status === 'publish'">
-                          <label class="btn btn-outline-primary" for="status_publish" @click="updateStatus('publish')">{{ __('Publish') }}</label>
+                          <label class="btn btn-outline-primary" for="status_publish" @click="updateStatus('publish')">{{ __('Published') }}</label>
                         </div>
                         <div class="input-group">
                           <input type="text" class="form-control bg-white" :placeholder="__('Search')+'...'" aria-describedby="search" v-model="filters.search" @keydown.enter="search">
