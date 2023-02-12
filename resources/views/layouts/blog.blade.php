@@ -141,8 +141,6 @@
     
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="blog.css" rel="stylesheet">
   </head>
   <body>
     
@@ -160,12 +158,14 @@
 
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
-      <a class="p-2 link-secondary" href="#">{{ __('Other') }}</a>
+      @foreach ($categories as $cat)
+        <a class="p-2 link-secondary" href="/category/{{ $cat->slug }}/">{{ $cat->name }}</a>
+      @endforeach
     </nav>
   </div>
 </div>
 
-<main class="container">
+<main id="app" class="container">
   <div class="row g-5">
     <div class="col-md-8">
 

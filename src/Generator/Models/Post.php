@@ -12,6 +12,10 @@ class Post extends Model
 
     protected $table = 'posts';
     protected $guarded = [];
+    protected $casts = [
+        'tags' => 'array',
+        'published_at' => 'datetime',
+    ];
 
     public function user()
     {

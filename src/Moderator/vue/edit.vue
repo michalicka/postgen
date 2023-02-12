@@ -1,13 +1,7 @@
 <template>
-    <div class="container mt-4">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-
-                <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href="/admin">{{ __('Back') }}</a></li>
-                  </ol>
-                </nav>
 
                 <div v-if="post" class="card">
                     <div class="card-body">
@@ -31,12 +25,42 @@
                     </div>
                 </div>
 
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb mt-4">
+                    <li class="breadcrumb-item active" aria-current="page"><a href="/admin">{{ __('Back') }}</a></li>
+                  </ol>
+                </nav>
+
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">{{ __('Published date') }}:</label>
+                            <input type="datetime-local" class="form-control" v-model="post.published_at">
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">{{ __('Category') }}:</label>
+                            <input type="text" class="form-control" v-model="post.category">
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">{{ __('Tags') }}:</label>
+                            <input type="text" class="form-control" v-model="post.tags">
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">{{ __('Image') }}:</label>
+                            <input type="text" class="form-control" v-model="post.image">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
     props: {
         id: {
@@ -54,13 +78,18 @@ export default {
             axios.get(`/api/posts/${this.id}/get`)
                 .then(({data}) => {
                     this.post = data;
+                    this.post.published_at = this.post.published_at ? moment(this.post.published_at).format('YYYY-MM-DD hh:mm:ss') : '';
                 });
         },
         update() {
             axios.post(`/api/posts/${this.id}/update`, {
+                    category: this.post.category,
                     title: this.post.title,
                     slug: this.post.slug,
                     content: this.post.content,
+                    published_at: this.post.published_at,
+                    tags: this.post.tags,
+                    image: this.post.image,
                 })
                 .then(({data}) => {
                     this.$toast.success(this.__('Post updated'));
@@ -84,6 +113,9 @@ export default {
                     this.$toast.success(this.__('Post published'));
                     window.location = '/admin';
                 });
+        },
+        formatDate(date) {
+            return moment(date);
         },
     },
     mounted() {

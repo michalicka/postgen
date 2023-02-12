@@ -4,6 +4,7 @@ namespace Postgen\Generator\Logic;
 
 use Postgen\Generator\Models\Post;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class Posts
 {
@@ -49,14 +50,32 @@ class Posts
         }
     }
 
-    public static function update(int $id, string $title, string $slug, string $content): Post
+    public static function update(Post $post, string $title, string $slug, string $content): Post
     {
-        $post = Post::find($id);
-
         $post->update([
             'title' => strip_tags($title),
             'slug' => Str::slug($slug),
             'content' => strip_tags($content, "<b><strong><i><em><h2><h3><a>"),
+        ]);
+
+        return $post;
+    }
+
+    public static function updateMeta(Post $post, ?string $category, array $tags, ?string $published_at): Post
+    {
+        $post->update([
+            'category' => $category,
+            'tags' => $tags,
+            'published_at' => $published_at ?: null,
+        ]);
+
+        return $post;
+    }
+
+    public static function updateImage(Post $post, ?string $image): Post
+    {
+        $post->update([
+            'image' => $image ?: null,
         ]);
 
         return $post;
@@ -71,7 +90,10 @@ class Posts
 
     public static function publish(Post $post): bool
     {
-        $post->update(['status' => 'published']);
+        $post->update([
+            'status' => 'published',
+            'published_at' => Carbon::now(),
+        ]);
 
         return true;
     }

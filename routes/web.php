@@ -36,5 +36,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/wiki/', [Postgen\UI\Controllers\ViewController::class, 'index'])->name('index');
 Route::get('/wiki/{slug}/', [Postgen\UI\Controllers\ViewController::class, 'get'])->name('get');
-Route::get('/archiv/{year}/{month}/', [Postgen\UI\Controllers\ViewController::class, 'archive'])->name('archive');
+Route::get('/archive/{year}/{month}/', [Postgen\UI\Controllers\ViewController::class, 'archive'])->name('archive');
 Route::get('/author/{author}', [Postgen\UI\Controllers\ViewController::class, 'author'])->name('author');
+Route::get('/category/{slug}', [Postgen\UI\Controllers\ViewController::class, 'category'])->name('category');
