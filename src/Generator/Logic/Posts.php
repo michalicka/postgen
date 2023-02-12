@@ -64,8 +64,8 @@ class Posts
     public static function updateMeta(Post $post, ?string $category, array $tags, ?string $published_at): Post
     {
         $post->update([
-            'category' => $category,
-            'tags' => $tags,
+            'category' => strip_tags($category),
+            'tags' => array_map(fn($tag) => strip_tags($tag), $tags),
             'published_at' => $published_at ?: null,
         ]);
 
@@ -81,9 +81,9 @@ class Posts
         return $post;
     }
 
-    public static function remove(int $id): bool
+    public static function remove(Post $post): bool
     {
-        $post = Post::find($id)->delete();
+        $post->delete();
 
         return true;
     }

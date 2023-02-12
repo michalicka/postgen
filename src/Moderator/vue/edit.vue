@@ -40,8 +40,8 @@
                             <input type="datetime-local" class="form-control" v-model="post.published_at">
                         </div>
                         <div class="mb-3">
-                            <label for="title" class="form-label">{{ __('Category') }}:</label>
-                            <input type="text" class="form-control" v-model="post.category">
+                            <label for="title" class="form-label">{{ __('Category') }}:</label><br />
+                            <Dropdown class="w-full" v-model="post.category" :options="categories" optionLabel="name" :editable="true"/>
                         </div>
                         <div class="mb-3">
                             <label for="title" class="form-label">{{ __('Tags') }}:</label>
@@ -50,6 +50,7 @@
                         <div class="mb-3">
                             <label for="title" class="form-label">{{ __('Image') }}:</label>
                             <input type="text" class="form-control" v-model="post.image">
+                            <img v-if="post.image" :src="post.image" class="w-full rounded mt-2" />
                         </div>
                     </div>
                 </div>
@@ -60,8 +61,10 @@
 
 <script>
 import moment from 'moment'
+import Dropdown from 'primevue/dropdown';
 
 export default {
+    components: { Dropdown },
     props: {
         id: {
             type: Number,
@@ -70,14 +73,16 @@ export default {
     },
     data() {
         return {
-            post: null,
+            post: {},
+            categories: [],
         }
     },
     methods: {
         loadData() {
             axios.get(`/api/posts/${this.id}/get`)
                 .then(({data}) => {
-                    this.post = data;
+                    this.post = data.post;
+                    this.categories = data.dropdowns.categories;
                     this.post.published_at = this.post.published_at ? moment(this.post.published_at).format('YYYY-MM-DD hh:mm:ss') : '';
                 });
         },

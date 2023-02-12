@@ -4,6 +4,8 @@ namespace Postgen\UI\Controllers;
 
 use Illuminate\Routing\Controller;
 use Postgen\Generator\Models\Post;
+use Postgen\Common\Logic\Categories;
+use Postgen\Common\Logic\Months;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
@@ -19,8 +21,8 @@ class ViewController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(10);
 
-        $months = $this->months();
-        $categories = $this->categories();
+        $months = Months::list();
+        $categories = Categories::list();
 
         return view('pages.index', compact('posts', 'months', 'categories'));
     }
@@ -38,8 +40,8 @@ class ViewController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(10);
 
-        $months = $this->months();
-        $categories = $this->categories();
+        $months = Months::list();
+        $categories = Categories::list();
 
         return view('pages.index', compact('posts', 'months', 'categories'));
     }
@@ -54,16 +56,16 @@ class ViewController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(10);
 
-        $months = $this->months();
-        $categories = $this->categories();
+        $months = Months::list();
+        $categories = Categories::list();
 
         return view('pages.index', compact('posts', 'months', 'categories'));
     }
 
     public function category(string $slug)
     {
-        $categories = $this->categories();
-        $category = $categories->firstWhere('slug', $slug);
+        $categories = Categories::list();
+        $category = $categories->firstWhere('code', $slug);
 
         if (!$category) abort(404);
 
@@ -75,8 +77,8 @@ class ViewController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(10);
 
-        $months = $this->months();
-        $categories = $this->categories();
+        $months = Months::list();
+        $categories = Categories::list();
 
         return view('pages.index', compact('posts', 'months', 'categories'));
     }
@@ -92,40 +94,9 @@ class ViewController extends Controller
 
         if (!$post) abort(404);
 
-        $months = $this->months();
-        $categories = $this->categories();
+        $months = Months::list();
+        $categories = Categories::list();
 
         return view('pages.post', compact('post', 'months', 'categories'));
-    }
-
-    private function months(): array
-    {
-        return \DB::select("
-            SELECT DISTINCT
-                DATE_FORMAT(published_at, '%M') AS name,
-                DATE_FORMAT(published_at, '%m') AS month,
-                DATE_FORMAT(published_at, '%Y') AS year
-            FROM posts
-            WHERE status = ?
-              AND published_at <= ?
-            ORDER BY published_at DESC;
-        ", ['published', Carbon::now()]);
-    }
-
-    private function categories(): Collection
-    {
-        return collect(\DB::select("
-            SELECT DISTINCT category
-            FROM posts
-            WHERE status = ?
-              AND published_at <= ?
-              and category is not null
-              and category != ''
-            ORDER BY category;
-        ", ['published', Carbon::now()]))
-        ->map(fn($cat) => (object)[
-            'slug' => Str::slug($cat->category),
-            'name' => $cat->category,
-        ]);
     }
 }

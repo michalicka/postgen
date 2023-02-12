@@ -156,10 +156,10 @@
     </div>
   </header>
 
-  <div class="nav-scroller py-1 mb-2">
-    <nav class="nav d-flex justify-content-between">
+  <div class="nav-scroller mb-2">
+    <nav class="nav d-flex justify-start space-x-4">
       @foreach ($categories as $cat)
-        <a class="p-2 link-secondary" href="/category/{{ $cat->slug }}/">{{ $cat->name }}</a>
+        <a class="p-2 link-secondary" href="/category/{{ $cat->code }}/">{{ $cat->name }}</a>
       @endforeach
     </nav>
   </div>
@@ -175,6 +175,7 @@
 
     <div class="col-md-4">
       <div class="position-sticky" style="top: 2rem;">
+
         <div class="p-4">
           <h4 class="fst-italic">{{ __('Archives') }}</h4>
           <ol class="list-unstyled mb-0">

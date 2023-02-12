@@ -2,7 +2,7 @@
     <div>
         <div class="container mt-4">
             <div class="row justify-content-center">
-                <div class="col-md-8">
+                <div class="col-md-12">
 
                     <div class="flex justify-between items-center space-x-4">
                         <div class="btn-group" role="group" aria-label="Status">
@@ -34,6 +34,9 @@
                                 <tr v-for="item in posts" class="">
                                     <td class="table-data">
                                         <a :href="link(item.id)">{{item.title}}</a>
+                                    </td>
+                                    <td class="table-data">
+                                        {{item.category}}
                                     </td>
                                     <td class="table-data">
                                         {{__(item.status)}}
@@ -70,7 +73,8 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from 'moment';
+import "moment/locale/cs";
 import SearchIcon from '../../UI/vue/Icons/search';
 import PrevIcon from '../../UI/vue/Icons/prev';
 import NextIcon from '../../UI/vue/Icons/next';
@@ -81,6 +85,7 @@ export default {
         return {
             headers: [
                 this.__('Title'),
+                this.__('Category'),
                 this.__('Status'),
                 this.__('Likes'),
                 this.__('Created'),

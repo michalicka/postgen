@@ -29,6 +29,8 @@
     "dependencies": {
         "bootstrap-icons": "^1.10.3",
         "moment": "^2.29.4",
+        "primeicons": "^6.0.1",
+        "primevue": "^2.10.1",
         "vue-toast-notification": "^0.6.3"
     }
 }

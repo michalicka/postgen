@@ -5,6 +5,7 @@ namespace Postgen\Api\Controllers;
 use Illuminate\Routing\Controller;
 use Postgen\Generator\Models\Post;
 use Postgen\Generator\Logic\Posts;
+use Postgen\Common\Logic\Categories;
 
 class PostApiController extends Controller
 {
@@ -30,10 +31,38 @@ class PostApiController extends Controller
 
         if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
 
-        return response($post->toArray());
+        $dropdowns = [
+            'categories' => Categories::list()
+        ];
+
+        return response(compact('post', 'dropdowns'));
     }
 
     public function update(int $id)
+    {
+        $post = $this->store($id);
+
+        return response($post->toArray());
+    }
+
+    public function remove(int $id)
+    {
+        $post = Post::find($id);
+        if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
+        $success = Posts::remove($post);
+
+        return response(compact('success'));
+    }
+
+    public function publish(int $id)
+    {
+        $post = $this->store($id);
+        $success = Posts::publish($post);
+
+        return response(compact('success'));
+    }
+
+    private function store(int $id)
     {
         $title = request('title');
         $slug = request('slug');
@@ -46,33 +75,12 @@ class PostApiController extends Controller
         $post = Post::find($id);
         if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
 
+        $tags = array_map(fn($tag) => trim($tag), is_array($tags) ? $tags : explode(',', $tags));
+
         $post = Posts::update($post, $title, $slug, $content);
-        $post = Posts::updateMeta($post, $category, array_map(fn($tag) => trim($tag), is_array($tags) ? $tags : explode(',', $tags)), $published_at);
+        $post = Posts::updateMeta($post, $category, $tags, $published_at);
         $post = Posts::updateImage($post, $image);
 
-        return response($post->toArray());
-    }
-
-    public function remove(int $id)
-    {
-        $success = Posts::remove($id);
-        if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
-
-        return response(compact('success'));
-    }
-
-    public function publish(int $id)
-    {
-        $title = request('title');
-        $slug = request('slug');
-        $content = request('content');
-
-        $post = Post::find($id);
-        if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
-
-        $post = Posts::update($post, $title, $slug, $content);
-        $success = Posts::publish($post);
-
-        return response(compact('success'));
+        return $post;
     }
 }
