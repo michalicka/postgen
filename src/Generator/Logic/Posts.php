@@ -5,10 +5,11 @@ namespace Postgen\Generator\Logic;
 use Postgen\Generator\Models\Post;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Postgen\Common\Logic\Images;
 
 class Posts
 {
-    public static function store(string $title, string $content, string $model)
+    public static function store(string $title, string $content, string $model = 'text-davinci-003')
     {
         $title = $title ?: Str::words($content, 10, '...');
         $title = Str::of($title)->contains(':') ? trim(Str::after($title, ':')) : $title;
@@ -50,11 +51,11 @@ class Posts
         }
     }
 
-    public static function update(Post $post, string $title, string $slug, string $content): Post
+    public static function update(Post $post, string $title, ?string $slug, string $content): Post
     {
         $post->update([
             'title' => strip_tags($title),
-            'slug' => Str::slug($slug),
+            'slug' => $slug ? Str::slug($slug) : $post->slug,
             'content' => strip_tags($content, "<b><strong><i><em><h2><h3><a>"),
         ]);
 
@@ -74,6 +75,10 @@ class Posts
 
     public static function updateImage(Post $post, ?string $image): Post
     {
+        if ($image && !Str::startsWith($image, '/')) {
+            $image = Images::store($image);
+        }
+
         $post->update([
             'image' => $image ?: null,
         ]);

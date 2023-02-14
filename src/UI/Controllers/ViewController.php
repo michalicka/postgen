@@ -36,7 +36,7 @@ class ViewController extends Controller
                 Carbon::parse(sprintf('%d-%s-01', $year, Str::padLeft("$month", 2, '0')))->startOfMonth(),
                 Carbon::parse(sprintf('%d-%s-01', $year, Str::padLeft("$month", 2, '0')))->endOfMonth()
             ])
-            ->where('published_at', '<=', Carbon::now())
+            ->whereNotNull('published_at')
             ->orderBy('published_at', 'desc')
             ->paginate(10);
 
@@ -52,7 +52,7 @@ class ViewController extends Controller
             ->select(['id', 'title', 'slug', 'content', 'published_at', 'user_id', 'image'])
             ->where('status', 'published')
             ->where('user_id', $author)
-            ->where('published_at', '<=', Carbon::now())
+            ->whereNotNull('published_at')
             ->orderBy('published_at', 'desc')
             ->paginate(10);
 
@@ -73,7 +73,7 @@ class ViewController extends Controller
             ->select(['id', 'title', 'slug', 'content', 'published_at', 'user_id', 'image'])
             ->where('status', 'published')
             ->where('category', $category->name)
-            ->where('published_at', '<=', Carbon::now())
+            ->whereNotNull('published_at')
             ->orderBy('published_at', 'desc')
             ->paginate(10);
 
@@ -89,7 +89,7 @@ class ViewController extends Controller
             ->select(['id', 'category', 'title', 'slug', 'content', 'published_at', 'user_id', 'image'])
             ->where('status', 'published')
             ->where('slug', $slug)
-            ->where('published_at', '<=', Carbon::now())
+            ->whereNotNull('published_at')
             ->first();
 
         if (!$post) abort(404);

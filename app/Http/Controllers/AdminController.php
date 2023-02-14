@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class AdminController extends Controller
 {
@@ -23,7 +23,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin', [
+        return view('app', [
+            'app' => 'admin',
             'api_url' => env('API_URL'),
             'api_user' => env('API_USER'),
         ]);

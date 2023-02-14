@@ -32,8 +32,9 @@
                             </thead>
                             <tbody class="bg-white dark:bg-dark-header divide-y divide-gray-200 dark:divide-gray-700">
                                 <tr v-for="item in posts" class="">
-                                    <td class="table-data">
-                                        <a :href="link(item.id)">{{item.title}}</a>
+                                    <td class="table-data flex space-x-2">
+                                        <a :href="editLink(item)">{{item.title}}</a>
+                                        <a v-if="item.status === 'published'" :href="showLink(item)" target="_blank"><i class="pi pi-external-link text-gray-500 text-sm"></i></a>
                                     </td>
                                     <td class="table-data">
                                         {{item.category}}
@@ -108,8 +109,11 @@ export default {
                 this.lastPage = data.last_page;
             });
         },
-        link(id) {
-            return `/posts/${id}/edit`;
+        editLink(post) {
+            return `/posts/${post.id}/edit`;
+        },
+        showLink(post) {
+            return `/wiki/${post.slug}/`;
         },
         formatDate(date) {
             return moment(date).fromNow();

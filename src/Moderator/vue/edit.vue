@@ -17,7 +17,7 @@
                             <label for="content" class="form-label">{{ __('Text') }}:</label>
                             <textarea rows="15" class="form-control" v-model="post.content" />
                         </div>
-                        <div class="mb-3 flex w-full justify-between">
+                        <div class="flex w-full justify-between">
                             <button type="button" class="btn btn-danger" @click="remove">{{ __('Delete') }}</button>
                             <button type="button" class="btn btn-primary" @click="update">{{ __('Update') }}</button>
                             <button v-if="post.status !== 'published'" type="button" class="btn btn-success" @click="publish">{{ __('Publish') }}</button>
@@ -110,9 +110,13 @@ export default {
         },
         publish() {
             axios.post(`/api/posts/${this.id}/publish`, {
+                    category: this.post.category,
                     title: this.post.title,
                     slug: this.post.slug,
                     content: this.post.content,
+                    published_at: this.post.published_at,
+                    tags: this.post.tags,
+                    image: this.post.image,
                 })
                 .then(({data}) => {
                     this.$toast.success(this.__('Post published'));

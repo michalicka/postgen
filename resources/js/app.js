@@ -30,6 +30,7 @@ Vue.use(PrimeVue);
 
 require('../../src/Generator/index.js');
 require('../../src/Moderator/index.js');
+require('../../src/Wizard/index.js');
 require('../views/components/index.js');
 
 /**

@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome', [
+    return view('app', [
+        'app' => 'app',
         'api_url' => env('API_URL'),
         'api_user' => env('API_USER'),
     ]);
@@ -32,6 +33,8 @@ Route::get('/artisan/deploy', [ArtisanController::class, 'deploy'])->name('artis
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
     Route::get('/posts/{id}/edit', [Postgen\Moderator\Controllers\PostController::class, 'edit'])->name('posts.edit');
+
+    Route::get('/wizard', [Postgen\Wizard\Controllers\WizardController::class, 'index'])->name('wizard.index');
 });
 
 Route::get('/wiki/', [Postgen\UI\Controllers\ViewController::class, 'index'])->name('index');

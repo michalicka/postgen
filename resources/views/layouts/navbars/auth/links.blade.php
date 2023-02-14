@@ -16,6 +16,9 @@
         @endif
     @else
         <div class="nav-item">
+            <a class="nav-link" href="{{ route('wizard.index') }}">{{ __('Wizard') }}</a>
+        </div>
+        <div class="nav-item">
             <a class="nav-link" href="{{ route('admin.index') }}">{{ __('Dashboard') }}</a>
         </div>
         <div class="nav-item dropdown">

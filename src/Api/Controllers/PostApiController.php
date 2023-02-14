@@ -13,9 +13,8 @@ class PostApiController extends Controller
     {
         $status = request('status');
         $search = request('search');
-        $page = request('page');
 
-        $query = Post::select(['id', 'category', 'title', 'status', 'tags', 'likes', 'dislikes', 'image', 'created_at'])
+        $query = Post::select(['id', 'category', 'title', 'slug', 'status', 'tags', 'likes', 'dislikes', 'image', 'created_at'])
             ->orderBy('created_at', 'desc');
 
         if (auth()->user()?->id !== 1) $query->where('user_id', auth()->user()?->id);
@@ -62,7 +61,7 @@ class PostApiController extends Controller
         return response(compact('success'));
     }
 
-    private function store(int $id)
+    public function store(?int $id = null)
     {
         $title = request('title');
         $slug = request('slug');
@@ -72,9 +71,10 @@ class PostApiController extends Controller
         $published_at = request('published_at');
         $image = request('image');
 
-        $post = Post::find($id);
+        $post = $id ? Post::find($id) : Posts::store($title, $content);
         if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
 
+        $category = is_array($category) ? $category['name'] : $category;
         $tags = array_map(fn($tag) => trim($tag), is_array($tags) ? $tags : explode(',', $tags));
 
         $post = Posts::update($post, $title, $slug, $content);

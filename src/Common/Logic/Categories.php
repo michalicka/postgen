@@ -2,7 +2,6 @@
 
 namespace Postgen\Common\Logic;
 
-use Postgen\Generator\Models\Post;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import parseJsonStream from './stream.js';
+import parseJsonStream from '../../UI/vue/stream.js';
 import Arrow from '../../UI/vue/Icons/arrow';
 import Rate from './rate';
 
