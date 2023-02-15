@@ -14,8 +14,8 @@ class PostController extends Controller
         $model = request('model', 'text-davinci-003');
 
         $parts = preg_split('/\r?\n/', $content, 2);
-        if (count($parts) > 1 && strlen($parts[0]) && (strlen($parts[0]) < 5 || ucfirst($parts[0]) !== $parts[0])) {
-            $title = trim($title . $parts[0]);
+        if (count($parts) > 1 && strlen($parts[0]) && (strlen($parts[0]) < 5 || ucfirst($parts[0]) !== $parts[0]) && strpos($parts[0], '.') === false) {
+            $title = trim("$title $parts[0]");
             $content = trim($parts[1]);
         }
 

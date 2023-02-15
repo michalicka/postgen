@@ -56,7 +56,7 @@ class Posts
         $post->update([
             'title' => strip_tags($title),
             'slug' => $slug ? Str::slug($slug) : $post->slug,
-            'content' => strip_tags($content, "<b><strong><i><em><h2><h3><a>"),
+            'content' => strip_tags($content, "<p><h1><h2><strong><em><u><ol><ul><li><a><blockquote><pre>"),
         ]);
 
         return $post;

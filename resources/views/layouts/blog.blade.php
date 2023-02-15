@@ -137,6 +137,20 @@
     .blog-footer p:last-child {
       margin-bottom: 0;
     }
+
+    ul {
+        list-style-type: disc;
+    }
+
+    ol {
+        list-style-type: decimal;
+    }
+
+    blockquote {
+        border-left: 4px solid #ccc;
+        margin-left: 16px;
+        padding-left: 12px;
+    }
     </style>
     
     <!-- Custom styles for this template -->
@@ -148,7 +162,7 @@
   <header class="blog-header lh-1 py-3">
     <div class="row flex-nowrap justify-content-between align-items-center">
       <div class="col-4 pt-1">
-        <a class="blog-header-logo text-dark" href="/">{{ __('PostGen') }}</a>
+        <a class="blog-header-logo text-dark" href="/wiki/">{{ __('PostGen') }}</a>
       </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
         @include('layouts.navbars.auth.links')
@@ -175,6 +189,15 @@
 
     <div class="col-md-4">
       <div class="position-sticky" style="top: 2rem;">
+
+        <div class="p-4">
+          <h4 class="fst-italic">{{ __('Ask question') }}:</h4>
+          <form id="ask" action="/">
+            <div class="input-group">
+              <input type="text" class="form-control" name="q" onkeydown="if (event.keyCode == 13) { this.form.submit(); return false; }">
+              <button type="button" class="btn btn-secondary" title="{{ __('Send') }}" onclick="this.form.submit(); return false;"><i class="pi pi-search"></i></button>
+            </div>
+        </div>
 
         <div class="p-4">
           <h4 class="fst-italic">{{ __('Archives') }}</h4>

@@ -67,7 +67,7 @@ export default {
         },
         submit() {
             if (this.size && !this.running) {
-                this.generate(this.__('Napiš článek o délce minimálně :size znaků na téma ":title"', {
+                this.generate(this.__('White an article with minimum lenght :size on subject ":title"', {
                     size: this.size,
                     title: this.post.title
                 }));

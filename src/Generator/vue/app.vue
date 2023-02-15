@@ -70,9 +70,12 @@ export default {
             this.id = null;
             this.content = '';
         },
+        query(q) {
+            return this.__('V češtine :query', { query: q });
+        },
         process(q) {
             this.clean();
-            fetch(`${this.apiUrl}?q=${encodeURIComponent(q)}&userid=${this.apiUser}`)
+            fetch(`${this.apiUrl}?q=${encodeURIComponent(this.query(q))}&userid=${this.apiUser}`)
                 .then(async (response) => {
                     // response.body is a ReadableStream
                     for await (const chunk of this.parseJsonStream(response.body)) {
@@ -101,6 +104,13 @@ export default {
     },
     mounted() {
         this.$refs.title.focus();
+        this.$nextTick(() => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('q')) {
+                this.title = urlParams.get('q');
+                this.process(this.title);
+            }
+        });
     }
 }
 </script>

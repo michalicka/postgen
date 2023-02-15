@@ -33,6 +33,7 @@ Route::get('/artisan/deploy', [ArtisanController::class, 'deploy'])->name('artis
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
     Route::get('/posts/{id}/edit', [Postgen\Moderator\Controllers\PostController::class, 'edit'])->name('posts.edit');
+    Route::get('/posts/{id}/preview', [Postgen\Moderator\Controllers\PostController::class, 'preview'])->name('posts.preview');
 
     Route::get('/wizard', [Postgen\Wizard\Controllers\WizardController::class, 'index'])->name('wizard.index');
 });
@@ -42,3 +43,4 @@ Route::get('/wiki/{slug}/', [Postgen\UI\Controllers\ViewController::class, 'get'
 Route::get('/archive/{year}/{month}/', [Postgen\UI\Controllers\ViewController::class, 'archive'])->name('archive');
 Route::get('/author/{author}', [Postgen\UI\Controllers\ViewController::class, 'author'])->name('author');
 Route::get('/category/{slug}', [Postgen\UI\Controllers\ViewController::class, 'category'])->name('category');
+Route::get('/tag/{slug}', [Postgen\UI\Controllers\ViewController::class, 'tag'])->name('tag');

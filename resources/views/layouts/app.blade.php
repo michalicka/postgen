@@ -27,10 +27,13 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container flex items-center justify-between">
-                <div>
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                <div class="flex space-x-4 items-center">
+                    <a class="navbar-brand font-bold" href="{{ url('/') }}">
                         {{ __('PostGen') }}
                     </a>
+                    <div class="nav-item">
+                        <a class="nav-link" href="{{ route('index') }}">{{ __('Wiki') }}</a>
+                    </div>
                 </div>
                 @include('layouts.navbars.auth.links')
             </div>

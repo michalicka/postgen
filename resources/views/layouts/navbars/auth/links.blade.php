@@ -1,7 +1,4 @@
 <div class="flex flex-col lg:flex-row items-center justify-center space-y-4 lg:space-x-4 space-x-0 lg:space-y-0">
-    <div class="nav-item">
-        <a class="nav-link" href="{{ route('index') }}">{{ __('Wiki') }}</a>
-    </div>
     @guest
         @if (Route::has('login'))
             <div class="nav-item">
@@ -16,10 +13,10 @@
         @endif
     @else
         <div class="nav-item">
-            <a class="nav-link" href="{{ route('wizard.index') }}">{{ __('Wizard') }}</a>
+            <a class="nav-link" href="{{ route('admin.index') }}">{{ __('Dashboard') }}</a>
         </div>
         <div class="nav-item">
-            <a class="nav-link" href="{{ route('admin.index') }}">{{ __('Dashboard') }}</a>
+            <a class="nav-link" href="{{ route('wizard.index') }}">{{ __('Wizard') }}</a>
         </div>
         <div class="nav-item dropdown">
             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

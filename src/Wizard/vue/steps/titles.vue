@@ -11,7 +11,7 @@
             <div v-if="result.length" class="mt-2">
                 <label class="font-bold" for="selected">{{ __('Select title to continue with') }}:</label>
                 <div v-for="item in result" class="flex items-center space-x-2">
-                    <RadioButton name="selected" :value="item" v-model="selected" @input="(v) => post.title = v" />
+                    <RadioButton name="selected" :value="item" v-model="selected" @input="select" />
                     <div>{{ item }}</div>
                 </div>
             </div>
@@ -59,7 +59,7 @@ export default {
         parseJsonStream,
         submit() {
             if (this.search && !this.running) {
-                this.generate(this.__('Napiš 5 poutavých nadpisů článků obsahujících ":search" ve formátu číslovaného seznamu.', { search: this.search }));
+                this.generate(this.__('Write 5 article titles containing ":search" in ordered list format', { search: this.search }));
             }
         },
         generate(q) {
@@ -80,6 +80,9 @@ export default {
         },
         parse() {
             this.result = this.content.split("\n").map(item => item.replace(/^\d+\.\s/, ""));
+        },
+        select(title) {
+            this.post.title = title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();
         }
     },
 }

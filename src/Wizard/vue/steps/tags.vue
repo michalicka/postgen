@@ -41,11 +41,11 @@ export default {
             post: this.value,
             size: null,
             sizes: [
-                { name: '2 tagy', code: 2 },
-                { name: '3 tagy', code: 3 },
-                { name: '4 tagy', code: 4 },
-                { name: '5 tagů', code: 5 },
-                { name: '6 tagů', code: 6 },
+                { name: '2 tags', code: 2 },
+                { name: '3 tags', code: 3 },
+                { name: '4 tags', code: 4 },
+                { name: '5 tags', code: 5 },
+                { name: '6 tags', code: 6 },
             ],
             result: '',
         }
@@ -58,7 +58,7 @@ export default {
         },
         submit() {
             if (this.size && !this.running) {
-                this.generate(this.__("Vyber minimálně :size a odděl je čárkou z článku: \n\n:content", {
+                this.generate(this.__("Extract minimum of :size and separate whem by comma from article \n\n:content", {
                     size: _.find(this.sizes, { code: this.size }).name,
                     content: this.post.content
                 }));

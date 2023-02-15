@@ -6,9 +6,7 @@ use Illuminate\Routing\Controller;
 use Postgen\Generator\Models\Post;
 use Postgen\Common\Logic\Categories;
 use Postgen\Common\Logic\Months;
-use App\Models\User;
 use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
 use Carbon\Carbon;
 
 class ViewController extends Controller
@@ -83,10 +81,26 @@ class ViewController extends Controller
         return view('pages.index', compact('posts', 'months', 'categories'));
     }
 
+    public function tag(string $slug)
+    {
+        $posts = Post::with('user')
+            ->select(['id', 'title', 'slug', 'content', 'published_at', 'user_id', 'image'])
+            ->where('status', 'published')
+            ->whereRaw("JSON_CONTAINS(tags, ?)", '"'.Str::slug($slug).'"')
+            ->whereNotNull('published_at')
+            ->orderBy('published_at', 'desc')
+            ->paginate(10);
+
+        $months = Months::list();
+        $categories = Categories::list();
+
+        return view('pages.index', compact('posts', 'months', 'categories'));
+    }
+
     public function get(string $slug)
     {
         $post = Post::with('user')
-            ->select(['id', 'category', 'title', 'slug', 'content', 'published_at', 'user_id', 'image'])
+            ->select(['id', 'category', 'title', 'slug', 'content', 'published_at', 'user_id', 'tags', 'image'])
             ->where('status', 'published')
             ->where('slug', $slug)
             ->whereNotNull('published_at')
