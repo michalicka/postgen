@@ -14,6 +14,10 @@
     "Draft": "Návrh",
     "Published": "Publikováno",
     "Search": "Vyhledat",
+    "Name": "Jméno",
+    "Web name": "Jméno webu",
+    "Action": "Akce",
+    "Add": "Přidat",
     "Title": "Název",
     "Slug": "Slug",
     "Text": "Text",
@@ -24,6 +28,7 @@
     "published": "Publikováno",
     "Back": "Zpět",
     "Delete": "Smazat",
+    "Edit": "Upravit",
     "Update": "Upravit",
     "Publish": "Publikovat",
     "Rating": "Hodnocení",
@@ -75,5 +80,9 @@
     "2000 characters": "2000 znaků",
     "White an article with minimum lenght :size on subject \":title\"": "Napiš česky článek o délce minimálně :size na téma \":title\"",
     "Describe cover image": "Popiš, co má obsahovat obrázek",
-    "Select or write article category": "Vyber nebo napiš rubriku článku"
+    "Select or write article category": "Vyber nebo napiš rubriku článku",
+    "Site updated": "Externí web upraven",
+    "Site removed": "Externí web odebrán",
+    "Update failed": "Uložení selhalo",
+    "Please enter valid URL": "Zadejte funkční URL odkaz"
 }

@@ -26,7 +26,7 @@ class PostApiController extends Controller
 
     public function get(int $id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
 
         if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
 
@@ -47,7 +47,7 @@ class PostApiController extends Controller
 
     public function remove(int $id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
         $success = Posts::remove($post);
 
@@ -72,7 +72,7 @@ class PostApiController extends Controller
         $published_at = request('published_at');
         $image = request('image');
 
-        $post = $id ? Post::find($id) : Posts::store($title, $content);
+        $post = $id ? Post::findOrFail($id) : Posts::store($title, $content);
         if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
 
         $category = is_array($category) ? $category['name'] : $category;

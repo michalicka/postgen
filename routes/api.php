@@ -30,4 +30,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/meta/dropdowns', [Postgen\Api\Controllers\MetaApiController::class, 'dropdowns'])->name('api.meta.dropdowns');
     Route::get('/image/preview', [Postgen\Api\Controllers\ImageApiController::class, 'preview'])->name('api.image.preview');
     Route::post('/image/generate', [Postgen\Api\Controllers\ImageApiController::class, 'generate'])->name('api.image.generate');
+
+    Route::get('/sites/list', [Postgen\Api\Controllers\SiteApiController::class, 'list'])->name('api.sites.list');
+    Route::post('/sites/update', [Postgen\Api\Controllers\SiteApiController::class, 'update'])->name('api.sites.update');
+    Route::post('/sites/{id}/remove', [Postgen\Api\Controllers\SiteApiController::class, 'remove'])->name('api.sites.remove');
 });

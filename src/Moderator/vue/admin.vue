@@ -4,6 +4,8 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">
 
+                    <admin-menu />
+
                     <div class="flex justify-between items-center space-x-4">
                         <div class="btn-group" role="group" aria-label="Status">
                           <input type="radio" class="btn-check" name="status" id="status_all" autocomplete="off" :checked="filters.status === ''">
@@ -79,9 +81,10 @@ import "moment/locale/cs";
 import SearchIcon from '../../UI/vue/Icons/search';
 import PrevIcon from '../../UI/vue/Icons/prev';
 import NextIcon from '../../UI/vue/Icons/next';
+import AdminMenu from './menu';
 
 export default {
-    components: { SearchIcon, PrevIcon, NextIcon },
+    components: { SearchIcon, PrevIcon, NextIcon, AdminMenu },
     data() {
         return {
             headers: [

@@ -1,6 +1,7 @@
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import PrimeVue from 'primevue/config';
+// import VueRouter from 'vue-router';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -16,6 +17,7 @@ Vue.mixin(require('./trans'));
 
 Vue.use(VueToast);
 Vue.use(PrimeVue);
+// Vue.use(VueRouter);
 
 /**
  * The following block of code may be used to automatically register your
