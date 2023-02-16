@@ -10,7 +10,7 @@ class SiteApiController extends Controller
     public function list()
     {
         $query = Site::select(['id', 'name', 'api_url', 'api_key'])
-            ->where('user_id', auth()->user()->id)
+            ->where('user_id', auth()->id())
             ->orderBy('name');
 
         return $query->get();
@@ -19,7 +19,7 @@ class SiteApiController extends Controller
     public function update()
     {
         $id = request('id');
-        $user_id = auth()->user()->id;
+        $user_id = auth()->id();
         $name = request('name');
         $api_url = request('api_url');
         $api_key = request('api_key');

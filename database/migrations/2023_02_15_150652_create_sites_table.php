@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('api_url');
             $table->string('api_key')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->on('users')->references('id');
         });
     }
 

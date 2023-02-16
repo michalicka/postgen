@@ -31,6 +31,7 @@
     "Edit": "Upravit",
     "Update": "Upravit",
     "Publish": "Publikovat",
+    "Publish to": "Publikovat do",
     "Rating": "Hodnocení",
     "Post updated": "Článek upraven",
     "Post removed": "Článek smazán",
@@ -84,5 +85,6 @@
     "Site updated": "Externí web upraven",
     "Site removed": "Externí web odebrán",
     "Update failed": "Uložení selhalo",
-    "Please enter valid URL": "Zadejte funkční URL odkaz"
+    "Please enter valid URL": "Zadejte funkční URL odkaz",
+    "Link": "Odkaz"
 }

@@ -6,6 +6,7 @@ use Postgen\Generator\Models\Post;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Postgen\Common\Logic\Images;
+use Postgen\Publisher\Jobs\PublishPostJob;
 
 class Posts
 {
@@ -15,7 +16,7 @@ class Posts
         $title = Str::of($title)->contains(':') ? trim(Str::after($title, ':')) : $title;
         $title = preg_match('/"([^["]+)"/', $title, $match) ? $match[1] : $title;
         $slug = self::slug($title);
-        $user_id = auth()->check() ? auth()->user()->id : null;
+        $user_id = auth()->check() ? auth()->id() : null;
 
         return Post::create(compact('user_id', 'title', 'content', 'slug', 'model'));
     }
@@ -56,7 +57,12 @@ class Posts
         $post->update([
             'title' => strip_tags($title),
             'slug' => $slug ? Str::slug($slug) : $post->slug,
-            'content' => strip_tags($content, "<p><h1><h2><strong><em><u><ol><ul><li><a><blockquote><pre>"),
+            'content' => Str::of($content)
+                ->stripTags('<p><h1><h2><strong><em><u><ol><ul><li><a><blockquote><pre>')
+                ->replace('</p><p>', "\n\n")
+                ->replace('<p>', '')
+                ->replace('</p>', '')
+                ->trim(),
         ]);
 
         return $post;
@@ -88,17 +94,26 @@ class Posts
 
     public static function remove(Post $post): bool
     {
+        $post->update(['slug' => "{$post->slug}-{$post->id}"]);
         $post->delete();
 
         return true;
     }
 
-    public static function publish(Post $post): bool
+    public static function publish(Post $post, array $publishTo): bool
     {
-        $post->update([
-            'status' => 'published',
-            'published_at' => Carbon::now(),
-        ]);
+        if (array_search(0, $publishTo, true)) {
+            $post->update([
+                'status' => 'published',
+                'published_at' => Carbon::now(),
+            ]);
+        }
+
+        collect($publishTo)
+            ->filter()
+            ->each(fn($siteId) => \Queue::push(
+                new PublishPostJob($post->id, $siteId, auth()->id())
+            ));
 
         return true;
     }

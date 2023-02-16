@@ -6,11 +6,11 @@
                 <div v-if="post" class="card">
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="title" class="form-label">{{ __('Title') }}:</label>
+                            <label for="title" class="form-label font-bold">{{ __('Title') }}:</label>
                             <input type="text" class="form-control" v-model="post.title">
                         </div>
                         <div class="mb-3">
-                            <label for="slug" class="form-label">{{ __('Slug') }}:</label>
+                            <label for="slug" class="form-label font-bold">{{ __('Slug') }}:</label>
                             <div class="p-inputgroup">
                                 <Button :label="`${hostname}/wiki/`" class="p-button-secondary p-button-text" />
                                 <InputText class="w-full" id="slug" type="text" v-model="post.slug" />
@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="content" class="form-label">{{ __('Text') }}:</label>
+                            <label for="content" class="form-label font-bold">{{ __('Text') }}:</label>
                             <Editor ref="content" id="content" v-model="post.content">
                                 <template #toolbar>
                                     <span class="ql-formats">
@@ -50,7 +50,7 @@
                             </Editor>
                         </div>
                         <div class="mb-3">
-                            <label for="title" class="form-label">{{ __('Tags') }}:</label>
+                            <label for="title" class="form-label font-bold">{{ __('Tags') }}:</label>
                             <Chips class="w-full" v-model="post.tags">
                                 <template #chip="slotProps">
                                     <div>
@@ -73,29 +73,43 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="title" class="form-label">{{ __('Published date') }}:</label>
+                            <label class="form-label font-bold">{{ __('Publish to') }}:</label>
+                            <div class="field-checkbox">
+                                <Checkbox inputId="site0" name="site" :value="0" v-model="publish_to" />
+                                <label for="site0">{{ __('PostGen') }}</label>
+                            </div>
+                            <div class="field-checkbox" v-for="item in sites">
+                                <Checkbox :inputId="`site${item.code}`" name="site" :value="item.code" v-model="publish_to" />
+                                <label :for="`site${item.code}`">{{ item.name }}</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label font-bold">{{ __('Published date') }}:</label>
                             <input type="datetime-local" class="form-control" v-model="post.published_at">
                         </div>
                         <div class="flex justify-between w-full">
                             <button type="button" class="btn btn-danger" @click="remove">{{ __('Delete') }}</button>
-                            <button v-if="post.status !== 'published'" type="button" class="btn btn-success" @click="publish">{{ __('Publish') }}</button>
+                            <button type="button" class="btn btn-success" @click="publish">{{ __('Publish') }}</button>
                         </div>
                     </div>
                 </div>
                 <div class="card mt-4">
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="title" class="form-label">{{ __('Category') }}:</label><br />
+                            <label for="title" class="form-label font-bold">{{ __('Category') }}:</label><br />
                             <Dropdown class="w-full" v-model="post.category" :options="categories" optionLabel="name" :editable="true"/>
                         </div>
                         <div class="mb-3">
-                            <label for="title" class="form-label">{{ __('Image') }}:</label>
+                            <label for="title" class="form-label font-bold">{{ __('Image') }}:</label>
                             <input type="text" class="form-control" v-model="post.image">
                             <img v-if="post.image" :src="post.image" class="w-full rounded mt-2" />
                         </div>
                     </div>
                 </div>
             </div>
+
+            <links v-model="articles" />
+
         </div>
     </div>
 </template>
@@ -107,9 +121,11 @@ import Button from 'primevue/button';
 import Dropdown from 'primevue/dropdown';
 import Editor from 'primevue/editor';
 import Chips from 'primevue/chips';
+import Checkbox from 'primevue/checkbox';
+import Links from './components/links';
 
 export default {
-    components: { InputText, Button, Dropdown, Editor, Chips },
+    components: { InputText, Button, Dropdown, Editor, Chips, Checkbox, Links },
     props: {
         id: {
             type: Number,
@@ -120,6 +136,9 @@ export default {
         return {
             post: {},
             categories: [],
+            sites: [],
+            articles: [],
+            publish_to: [],
         }
     },
     computed: {
@@ -132,7 +151,11 @@ export default {
             axios.get(`/api/posts/${this.id}/get`)
                 .then(({data}) => {
                     this.post = data.post;
+                    this.sites = data.dropdowns.sites;
+                    this.articles = data.dropdowns.articles;
                     this.categories = data.dropdowns.categories;
+                    if (this.post.published_at) this.publish_to.push(0);
+                    this.publish_to.push(..._.map(this.articles, (item) => item.site_id));
                     this.post.published_at = this.post.published_at ? moment(this.post.published_at).format('YYYY-MM-DD hh:mm:ss') : '';
                     this.resize();
                 });
@@ -168,10 +191,11 @@ export default {
                     published_at: this.post.published_at,
                     tags: this.post.tags,
                     image: this.post.image,
+                    publish_to: this.publish_to,
                 })
                 .then(({data}) => {
                     this.$toast.success(this.__('Post published'));
-                    window.location = '/admin';
+                    this.loadData();
                 });
         },
         formatDate(date) {

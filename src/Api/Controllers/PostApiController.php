@@ -3,9 +3,11 @@
 namespace Postgen\Api\Controllers;
 
 use Illuminate\Routing\Controller;
+use Postgen\Common\Logic\Articles;
 use Postgen\Generator\Models\Post;
 use Postgen\Generator\Logic\Posts;
 use Postgen\Common\Logic\Categories;
+use Postgen\Common\Logic\Sites;
 
 class PostApiController extends Controller
 {
@@ -32,6 +34,8 @@ class PostApiController extends Controller
 
         $post->content = sprintf("<p>%s</p>", str_replace("\n\n", "</p><p>", $post->content));
         $dropdowns = [
+            'sites' => Sites::list(),
+            'articles' => Articles::list($post->id),
             'categories' => Categories::list()
         ];
 
@@ -56,8 +60,10 @@ class PostApiController extends Controller
 
     public function publish(int $id)
     {
+        $publishTo = request('publish_to', []);
+
         $post = $this->store($id);
-        $success = Posts::publish($post);
+        $success = Posts::publish($post, $publishTo);
 
         return response(compact('success'));
     }
