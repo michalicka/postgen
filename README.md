@@ -18,4 +18,11 @@ Log in to dashboard to update and publish posts.
 
 Use **Wizard** to generate post ideas.
 
-[More to come...]
+Add **Sites** for publishing to external sites.
+
+## PostGen clients
+
+- Wordpress: [postgen-wp-client](https://github.com/michalicka/postgen-wp-client)
+
+
+
