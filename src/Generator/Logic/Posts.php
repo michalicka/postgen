@@ -103,7 +103,7 @@ class Posts
 
     public static function publish(Post $post, array $publishTo): bool
     {
-        if (array_search(0, $publishTo, true)) {
+        if (array_search(0, $publishTo, true) !== false) {
             $post->update([
                 'status' => 'published',
                 'published_at' => Carbon::now(),
