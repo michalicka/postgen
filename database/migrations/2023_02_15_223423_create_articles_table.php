@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('link')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+            $table->timestamp('published_at')->nullable();
 
             $table->foreign('user_id')->on('users')->references('id');
             $table->foreign('post_id')->on('posts')->references('id');

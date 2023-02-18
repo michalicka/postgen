@@ -1,5 +1,5 @@
 <template>
-    <div class="border-b border-gray-200 dark:border-dark-body mt-4">
+    <div v-if="value.length" class="border-b border-gray-200 dark:border-dark-body mt-4">
         <table class="rounded-table w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead class="bg-gray-50 dark:bg-neutral-700">
                 <tr>

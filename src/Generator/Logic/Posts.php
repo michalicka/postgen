@@ -5,8 +5,9 @@ namespace Postgen\Generator\Logic;
 use Postgen\Generator\Models\Post;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Postgen\Common\Logic\Articles;
 use Postgen\Common\Logic\Images;
-use Postgen\Publisher\Jobs\PublishPostJob;
+use Postgen\Publisher\Jobs\PublishArticleJob;
 
 class Posts
 {
@@ -111,9 +112,10 @@ class Posts
 
         collect($publishTo)
             ->filter()
-            ->each(fn($siteId) => \Queue::push(
-                new PublishPostJob($post->id, $siteId, auth()->id())
-            ));
+            ->each(function($siteId) use ($post) {
+                $article = Articles::create($post->id, $siteId, auth()->id());
+                \Queue::push(new PublishArticleJob($article->id));
+            });
 
         return true;
     }
