@@ -89,7 +89,7 @@
                         </div>
                         <div class="flex justify-between w-full">
                             <button type="button" class="btn btn-danger" @click="remove">{{ __('Delete') }}</button>
-                            <button type="button" class="btn btn-success" @click="publish">{{ __('Publish') }}</button>
+                            <button v-if="publish_to.length" type="button" class="btn btn-success" @click="publish">{{ __('Publish') }}</button>
                         </div>
                     </div>
                 </div>

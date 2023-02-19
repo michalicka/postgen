@@ -32,7 +32,7 @@ class PostApiController extends Controller
 
         if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
 
-        $post->content = sprintf("<p>%s</p>", str_replace("\n\n", "</p><p>", $post->content));
+        $post->content = sprintf("<p>%s</p>", str_replace("\n", '<br>', str_replace("\n\n", "</p><p>", $post->content)));
         $dropdowns = [
             'sites' => Sites::list(),
             'articles' => Articles::list($post->id),

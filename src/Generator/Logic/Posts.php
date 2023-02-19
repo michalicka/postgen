@@ -18,6 +18,7 @@ class Posts
         $title = preg_match('/"([^["]+)"/', $title, $match) ? $match[1] : $title;
         $slug = self::slug($title);
         $user_id = auth()->check() ? auth()->id() : null;
+        $content = htmlspecialchars($content);
 
         return Post::create(compact('user_id', 'title', 'content', 'slug', 'model'));
     }
