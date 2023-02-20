@@ -17,14 +17,14 @@ export default {
         return {
             items: [
                 {
-                    label: 'Articles',
+                    label: this.__('Articles'),
                     icon: 'pi pi-fw pi-home',
                     command: () => {
                         window.location = '/admin';
                     }
                 },
                 {
-                    label: 'Sites',
+                    label: this.__('Sites'),
                     icon: 'pi pi-fw pi-link',
                     command: () => {
                         window.location = '/sites';

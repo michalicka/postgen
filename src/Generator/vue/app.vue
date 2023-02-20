@@ -6,7 +6,7 @@
                     <div class="card-body">
 
                         <div class="mb-3">
-                            <label for="title" class="form-label">{{ __('Enter question or task') }}:</label>
+                            <label for="title" class="form-label font-bold">{{ __('Enter question or task') }}:</label>
                             <div class="input-group">
                               <input ref="title" id="title" type="text" class="form-control" v-model="title" @keydown.enter="submit">
                               <button type="button" class="btn btn-secondary" :title="__('Send')" @click="submit"><arrow /></button>

@@ -44,11 +44,6 @@ export default {
         return {
             socialDialog: false,
             socialSite: null,
-            headers: [
-                this.__('Title'),
-                this.__('Link'),
-                this.__('Published'),
-            ],
         }
     },
     methods: {

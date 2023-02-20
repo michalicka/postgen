@@ -23,37 +23,45 @@
                         </div>
                     </div>
 
-                    <div class="border-b border-gray-200 dark:border-dark-body mt-4">
-                        <table class="rounded-table w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-neutral-700">
-                                <tr>
-                                    <th class="px-6 py-3 text-sm text-gray-500 dark:text-gray-200 text-left" v-for="header in headers">
-                                        {{header}}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white dark:bg-dark-header divide-y divide-gray-200 dark:divide-gray-700">
-                                <tr v-for="item in posts" class="">
-                                    <td class="table-data flex space-x-2">
-                                        <a :href="editLink(item)">{{item.title}}</a>
-                                        <a v-if="item.status === 'published'" :href="showLink(item)" target="_blank"><i class="pi pi-external-link text-gray-500 text-sm"></i></a>
-                                    </td>
-                                    <td class="table-data">
-                                        {{item.category}}
-                                    </td>
-                                    <td class="table-data">
-                                        {{__(item.status)}}
-                                    </td>
-                                    <td class="table-data">
-                                        {{item.likes - item.dislikes}}
-                                    </td>
-                                    <td class="table-data">
-                                        {{formatDate(item.created_at)}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <DataTable :value="posts" class="p-datatable-sm mt-4" stripedRows responsiveLayout="scroll">
+                        <template #empty>
+                            {{ __('No posts found.') }}
+                        </template>
+                        <template #loading>
+                            {{ __('Loading posts data. Please wait.') }}
+                        </template>
+                        <Column :header="__('Title')">
+                            <template #body="{data}">
+                                <div class="text-sm flex space-x-2">
+                                    <a :href="editLink(data)">{{data.title}}</a>
+                                    <a v-if="data.status === 'published'" :href="showLink(data)" target="_blank"><i class="pi pi-external-link text-gray-500 text-sm"></i></a>
+                                </div>
+                            </template>
+                        </Column>
+                        <Column :header="__('Category')">
+                            <template #body="{data}">
+                                <div class="text-sm text-gray-500">{{__(data.category)}}</div>
+                            </template>
+                        </Column>
+                        <Column :header="__('Status')">
+                            <template #body="{data}">
+                                <Badge v-if="data.status === 'published'" :value="__(data.status)" severity="success"></Badge>
+                                <Badge v-else :value="__(data.status)" severity="warning"></Badge>
+                            </template>
+                        </Column>
+                        <Column :header="__('Likes')">
+                            <template #body="{data}">
+                                <like-icon v-if="data.likes + data.dislikes > 0" class="w-4 h-4 text-green-700" />
+                                <dislike-icon v-if="data.likes + data.dislikes < 0" class="w-4 h-4 text-red-700" />
+                            </template>
+                        </Column>
+                        <Column :header="__('Created')">
+                            <template #body="{data}">
+                                <div class="text-sm text-gray-500">{{ formatDate(data.created_at) }}</div>
+                            </template>
+                        </Column>
+                    </DataTable>
+
                     <div class="flex items-center justify-between mt-2">
                         <div><button v-if="filters.page > 1" type="button" class="btn btn-secondary" @click="updatePage(-1)">
                             <div class="flex items-center space-x-2">
@@ -68,7 +76,6 @@
                             </div>
                         </button></div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -78,22 +85,20 @@
 <script>
 import moment from 'moment';
 import "moment/locale/cs";
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Badge from 'primevue/badge';
 import SearchIcon from '../../UI/vue/Icons/search';
 import PrevIcon from '../../UI/vue/Icons/prev';
 import NextIcon from '../../UI/vue/Icons/next';
+import LikeIcon from '../../UI/vue/Icons/like';
+import DislikeIcon from '../../UI/vue/Icons/dislike';
 import AdminMenu from './menu';
 
 export default {
-    components: { SearchIcon, PrevIcon, NextIcon, AdminMenu },
+    components: { DataTable, Column, Badge, SearchIcon, PrevIcon, NextIcon, LikeIcon, DislikeIcon, AdminMenu },
     data() {
         return {
-            headers: [
-                this.__('Title'),
-                this.__('Category'),
-                this.__('Status'),
-                this.__('Likes'),
-                this.__('Created'),
-            ],
             posts: [],
             filters: {
                 status: '',
