@@ -10,8 +10,6 @@ class WizardController extends Controller
     {
         return view('app', [
             'app' => 'wizard',
-            'api_url' => env('API_URL'),
-            'api_user' => env('API_USER'),
         ]);
     }
 }

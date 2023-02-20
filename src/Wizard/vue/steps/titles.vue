@@ -36,14 +36,6 @@ export default {
             type: Object,
             required: true,
         },
-        apiUrl: {
-            type: String,
-            required: true,
-        },
-        apiUser: {
-            type: String,
-            required: true,
-        },
     },
     data() {
         return {
@@ -64,7 +56,7 @@ export default {
         },
         generate(q) {
             this.content = '';
-            fetch(`${this.apiUrl}?q=${encodeURIComponent(q)}&userid=${this.apiUser}`)
+            fetch(`${window._config.api_url}?q=${encodeURIComponent(q)}&userid=${window._config.api_user}`)
                 .then(async (response) => {
                     this.running = true;
                     for await (const chunk of this.parseJsonStream(response.body)) {

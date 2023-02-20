@@ -15,8 +15,6 @@ class AdminController extends Controller
     {
         return view('app', [
             'app' => 'admin',
-            'api_url' => env('API_URL'),
-            'api_user' => env('API_USER'),
         ]);
     }
 
@@ -24,8 +22,6 @@ class AdminController extends Controller
     {
         return view('app', [
             'app' => 'sites',
-            'api_url' => env('API_URL'),
-            'api_user' => env('API_USER'),
         ]);
     }
 }

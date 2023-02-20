@@ -17,8 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('app', [
         'app' => 'app',
-        'api_url' => env('API_URL'),
-        'api_user' => env('API_USER'),
     ]);
 });
 

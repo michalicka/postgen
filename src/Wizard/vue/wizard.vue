@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 flex flex-col space-y-4">
-                <titles v-model="post" :api-url="apiUrl" :api-user="apiUser" />
-                <post v-if="post.title" v-model="post" :api-url="apiUrl" :api-user="apiUser" @input="(v) => post.content = v" />
-                <tags v-if="post.content" v-model="post" :api-url="apiUrl" :api-user="apiUser" />
+                <titles v-model="post" />
+                <post v-if="post.title" v-model="post" @input="(v) => post.content = v" />
+                <tags v-if="post.content" v-model="post" />
                 <category v-if="post.tags.length" v-model="post" :options="categories" />
                 <cover v-if="post.tags.length" v-model="post" />
                 <store v-if="post.tags.length" v-model="post" />
@@ -23,16 +23,6 @@ import Store from './steps/store';
 
 export default {
     components: { Titles, Post, Tags, Category, Cover, Store },
-    props: {
-        apiUrl: {
-            type: String,
-            required: true,
-        },
-        apiUser: {
-            type: String,
-            required: true,
-        },
-    },
     data() {
         return {
             categories: [],

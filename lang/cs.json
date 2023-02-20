@@ -79,12 +79,13 @@
     "1000 characters": "1000 znaků",
     "1500 characters": "1500 znaků",
     "2000 characters": "2000 znaků",
-    "White an article with minimum lenght :size on subject \":title\"": "Napiš česky článek o délce minimálně :size na téma \":title\"",
+    "White an article with minimum length :size on subject \":title\"": "Napiš česky článek o délce minimálně :size na téma \":title\"",
     "Describe cover image": "Popiš, co má obsahovat obrázek",
     "Select or write article category": "Vyber nebo napiš rubriku článku",
     "Site updated": "Externí web upraven",
     "Site removed": "Externí web odebrán",
     "Update failed": "Uložení selhalo",
     "Please enter valid URL": "Zadejte funkční URL odkaz",
-    "Link": "Odkaz"
+    "Link": "Odkaz",
+    "Write a :site post with a goal to read article with title \":title\". Maximum lenght of post should be :size characters. At the end add 3 tags starting with #.": "Napiš příspěvek na :site s cílem přečíst článek s názvem \":title\". Maximální délka příspěvku má být :size znaků. Na konec přidej 3 štítky začínající na #."
 }

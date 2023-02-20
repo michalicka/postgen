@@ -33,16 +33,6 @@ import Rate from './rate';
 
 export default {
     components: { Arrow, Rate },
-    props: {
-        apiUrl: {
-            type: String,
-            required: true,
-        },
-        apiUser: {
-            type: String,
-            required: true,
-        },
-    },
     data() {
         return {
             id: null,
@@ -75,7 +65,7 @@ export default {
         },
         process(q) {
             this.clean();
-            fetch(`${this.apiUrl}?q=${encodeURIComponent(this.query(q))}&userid=${this.apiUser}`)
+            fetch(`${window._config.api_url}?q=${encodeURIComponent(this.query(q))}&userid=${window._config.api_user}`)
                 .then(async (response) => {
                     // response.body is a ReadableStream
                     for await (const chunk of this.parseJsonStream(response.body)) {

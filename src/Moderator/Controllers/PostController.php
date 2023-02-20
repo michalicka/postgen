@@ -19,8 +19,6 @@ class PostController extends Controller
         return view('app', [
             'app' => 'edit',
             'id' => $id,
-            'api_url' => env('API_URL'),
-            'api_user' => env('API_USER'),
         ]);
     }
 

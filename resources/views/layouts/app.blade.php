@@ -23,6 +23,7 @@
     <script>
         window._locale = '{{ app()->getLocale() }}';
         window._translations = {!! cache('translations') !!};
+        window._config = {!! json_encode([ 'api_url' => env('API_URL'), 'api_user' => env('API_USER') ]) !!};
     </script>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">

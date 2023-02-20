@@ -5,16 +5,15 @@ namespace Postgen\Common\Logic;
 use Illuminate\Support\Collection;
 use Postgen\Generator\Models\Post;
 use Postgen\Moderator\Models\Article;
-use Postgen\Moderator\Models\Site;
 
 class Articles
 {
     public static function list(int $postId): Collection
     {
-        return Article::select(['id', 'site_id', 'title', 'link', 'created_at'])
+        return Article::select(['id', 'site_id', 'title', 'link', 'published_at'])
             ->where('user_id', auth()->id())
             ->where('post_id', $postId)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('published_at', 'desc')
             ->get();
     }
 
@@ -32,7 +31,6 @@ class Articles
             'content' => $post->content,
             'tags' => $post->tags,
             'image' => $post->image,
-            'link' => Site::find($siteId)->api_url // @todo remove
         ]);
     }
 

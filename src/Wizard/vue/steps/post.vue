@@ -26,14 +26,6 @@ export default {
             type: Object,
             required: true,
         },
-        apiUrl: {
-            type: String,
-            required: true,
-        },
-        apiUser: {
-            type: String,
-            required: true,
-        },
     },
     data() {
         return {
@@ -67,7 +59,7 @@ export default {
         },
         submit() {
             if (this.size && !this.running) {
-                this.generate(this.__('White an article with minimum lenght :size on subject ":title"', {
+                this.generate(this.__('White an article with minimum length :size on subject ":title"', {
                     size: this.size,
                     title: this.post.title
                 }));
@@ -75,7 +67,7 @@ export default {
         },
         generate(q) {
             this.post.content = '';
-            fetch(`${this.apiUrl}?q=${encodeURIComponent(q)}&userid=${this.apiUser}`)
+            fetch(`${window._config.api_url}?q=${encodeURIComponent(q)}&userid=${window._config.api_user}`)
                 .then(async (response) => {
                     this.running = true;
                     for await (const chunk of this.parseJsonStream(response.body)) {

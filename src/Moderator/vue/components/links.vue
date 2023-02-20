@@ -1,33 +1,39 @@
 <template>
-    <div v-if="value.length" class="border-b border-gray-200 dark:border-dark-body mt-4">
-        <table class="rounded-table w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead class="bg-gray-50 dark:bg-neutral-700">
-                <tr>
-                    <th class="px-6 py-3 text-sm text-gray-500 dark:text-gray-200 text-left" v-for="header in headers">
-                        {{header}}
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="bg-white dark:bg-dark-header divide-y divide-gray-200 dark:divide-gray-700">
-                <tr v-for="item in value" :key="item.id" class="">
-                    <td class="table-data truncate">
-                        <div class="text-black font-bold">{{item.title}}</div>
-                    </td>
-                    <td class="table-data truncate">
-                        <a :href="item.link" class="text-gray-500 no-underline" target="_blank">{{ item.link }}</a>
-                    </td>
-                    <td class="table-data truncate">
-                        {{ formatDate(item.created_at) }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div v-if="value.length" class="mt-4">
+        <DataTable :value="value" class="p-datatable-sm" responsiveLayout="scroll">
+            <Column field="title" :header="__('Title')"></Column>
+            <Column field="link" :header="__('Link')">
+                <template #body="{data}">
+                    <a :href="data.link" class="text-gray-500 no-underline" target="_blank">{{ data.link }}</a>
+                </template>
+            </Column>
+            <Column field="published_at" :header="__('Published')">
+                <template #body="{data}">
+                    {{ formatDate(data.published_at) }}
+                </template>
+            </Column>
+            <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
+                <template #body="{data}">
+                    <div class="flex space-x-2 flex-nowrap">
+                        <Button type="button" icon="pi pi-twitter" @click="editSocial(data, 'twitter')"></Button>
+                        <Button type="button" icon="pi pi-facebook" @click="editSocial(data, 'facebook')"></Button>
+                    </div>
+                </template>
+            </Column>
+        </DataTable>
+
+        <social v-if="socialDialog" v-model="socialDialog" :site="socialSite" @hide="socialDialog = false" />
     </div>
 </template>
 <script>
 import moment from 'moment'
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Button from 'primevue/button';
+import Social from './social';
 
 export default {
+    components: { DataTable, Column, Button, Social },
     props: {
         value: {
             type: Array,
@@ -36,17 +42,29 @@ export default {
     },
     data() {
         return {
+            socialDialog: false,
+            socialSite: null,
             headers: [
-                this.__('Web name'),
+                this.__('Title'),
                 this.__('Link'),
                 this.__('Published'),
             ],
         }
     },
     methods: {
+        editSocial(data, site) {
+            this.socialDialog = data;
+            this.socialSite = site;
+        },
         formatDate(date) {
             return moment(date).fromNow();
         },
     }
 }
 </script>
+
+<style>
+table.p-datatable-table button.p-button {
+    background-color: #007bff;
+}
+</style>
