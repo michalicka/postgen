@@ -9,6 +9,7 @@
                 <div class="p-inputgroup">
                     <InputText class="w-full" id="search" type="text" v-model="search" @keydown.enter="submit" />
                     <Button icon="pi pi-search" class="p-button-secondary" @click="submit" />
+                    <Button icon="pi pi-palette" class="p-button-secondary" @click="generate" />
                 </div>
             </div>
             <div v-if="list.length" class="flex overflow-x-scroll h-24 mt-2">
@@ -56,9 +57,6 @@ export default {
                 q: this.search,
             }}).then(({data}) => {
                 this.list = data.hits;
-                if (!this.list.length) {
-                    this.generate();
-                }
             })
             .finally(() => {
                 this.running = false;
@@ -69,6 +67,7 @@ export default {
         },
         generate() {
             this.running = true;
+            this.list = [];
             axios.post(`/api/image/generate`, {
                 q: this.search,
             })

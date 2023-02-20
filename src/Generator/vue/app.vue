@@ -61,7 +61,7 @@ export default {
             this.content = '';
         },
         query(q) {
-            return this.__('V češtine :query', { query: q });
+            return this.__('In English :query', { query: q });
         },
         process(q) {
             this.clean();

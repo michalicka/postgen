@@ -22,7 +22,7 @@
   <p>{!! nl2br(trim($post->content)) !!}</p>
   @if (count($post->tags))
       <div class="text-xs flex flex-wrap gap-2 mt-2 pt-2 items-center border-t border-gray-300">
-        <div class="font-bold">Štítky:</div>
+        <div class="font-bold">{{ __('Tags') }}:</div>
         @foreach ($post->tags as $tag)
             @if (\Str::slug($tag) === $tag)
                 <a href="/tag/{{ \Str::slug($tag) }}" class="bg-gray-100 rounded-md px-2 py-1 no-underline text-gray-700">{{ $tag }}</a>

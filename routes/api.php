@@ -34,4 +34,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/sites/list', [Postgen\Api\Controllers\SiteApiController::class, 'list'])->name('api.sites.list');
     Route::post('/sites/update', [Postgen\Api\Controllers\SiteApiController::class, 'update'])->name('api.sites.update');
     Route::post('/sites/{id}/remove', [Postgen\Api\Controllers\SiteApiController::class, 'remove'])->name('api.sites.remove');
+
+    Route::post('/articles/{id}/social/{type}/store', [Postgen\Api\Controllers\ArticleApiController::class, 'store'])->name('api.articles.social.store')->where('type', '(twitter|facebook)');
 });

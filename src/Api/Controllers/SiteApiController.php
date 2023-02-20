@@ -30,9 +30,13 @@ class SiteApiController extends Controller
 
         $data = compact('user_id', 'name', 'api_url', 'api_key');
 
-        $site = $id
-            ? Site::findOrFail($id)->update($data)
-            : Site::create($data);
+        if ($id) {
+            $site = Site::findOrFail($id);
+            if (auth()->id() !== 1 && $site->user_id !== auth()->id()) abort(403);
+            $site->update($data);
+        } else {
+            $site = Site::create($data);
+        }
 
         return response(compact('site'));
     }
@@ -40,7 +44,7 @@ class SiteApiController extends Controller
     public function remove(int $id)
     {
         $site = Site::findOrFail($id);
-        if (auth()->user()?->id !== 1 && $site->user_id !== auth()->user()?->id) abort(403);
+        if (auth()->id() !== 1 && $site->user_id !== auth()->id()) abort(403);
         $success = $site->delete();
 
         return response(compact('success'));

@@ -19,7 +19,7 @@ class PostApiController extends Controller
         $query = Post::select(['id', 'category', 'title', 'slug', 'status', 'tags', 'likes', 'dislikes', 'image', 'created_at'])
             ->orderBy('created_at', 'desc');
 
-        if (auth()->user()?->id !== 1) $query->where('user_id', auth()->user()?->id);
+        if (auth()->id() !== 1) $query->where('user_id', auth()->id());
         if ($status) $query->where('status', $status);
         if ($search) $query->where('title', 'like', "%$search%");
 
@@ -30,7 +30,7 @@ class PostApiController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
+        if (auth()->id() !== 1 && $post->user_id !== auth()->id()) abort(403);
 
         $post->content = sprintf("<p>%s</p>", str_replace("\n", '<br>', str_replace("\n\n", "</p><p>", $post->content)));
         $dropdowns = [
@@ -52,7 +52,7 @@ class PostApiController extends Controller
     public function remove(int $id)
     {
         $post = Post::findOrFail($id);
-        if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
+        if (auth()->id() !== 1 && $post->user_id !== auth()->id()) abort(403);
         $success = Posts::remove($post);
 
         return response(compact('success'));
@@ -79,7 +79,7 @@ class PostApiController extends Controller
         $image = request('image');
 
         $post = $id ? Post::findOrFail($id) : Posts::store($title, $content);
-        if (auth()->user()?->id !== 1 && $post->user_id !== auth()->user()?->id) abort(403);
+        if (auth()->id() !== 1 && $post->user_id !== auth()->id()) abort(403);
 
         $category = is_array($category) ? $category['name'] : $category;
         $tags = array_map(fn($tag) => trim($tag), is_array($tags) ? $tags : explode(',', $tags));

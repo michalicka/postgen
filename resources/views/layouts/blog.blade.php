@@ -200,6 +200,15 @@
         </div>
 
         <div class="p-4">
+          <h4 class="fst-italic">{{ __('Categories') }}</h4>
+          <ol class="list-unstyled mb-0">
+            @foreach ($categories as $item)
+                <li><a href="/category/{{ $item->code }}">{{ __($item->name) }}</a></li>
+            @endforeach
+          </ol>
+        </div>
+
+        <div class="p-4">
           <h4 class="fst-italic">{{ __('Archives') }}</h4>
           <ol class="list-unstyled mb-0">
             @foreach ($months as $item)
