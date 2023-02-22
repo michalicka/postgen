@@ -7,6 +7,7 @@ use Postgen\Common\Logic\Articles;
 use Postgen\Generator\Models\Post;
 use Postgen\Generator\Logic\Posts;
 use Postgen\Common\Logic\Categories;
+use Postgen\Common\Logic\Links;
 use Postgen\Common\Logic\Sites;
 
 class PostApiController extends Controller
@@ -32,11 +33,17 @@ class PostApiController extends Controller
 
         if (auth()->id() !== 1 && $post->user_id !== auth()->id()) abort(403);
 
+        if (!preg_match('/<[^>]+>[^<]+<\/\w+>/', $post->content)) {
+            $post = Posts::autoLinks($post);
+            $post = Posts::autoTags($post);
+        }
+
         $post->content = sprintf("<p>%s</p>", str_replace("\n", '<br>', str_replace("\n\n", "</p><p>", $post->content)));
         $dropdowns = [
             'sites' => Sites::list(),
             'articles' => Articles::list($post->id),
-            'categories' => Categories::list()
+            'categories' => Categories::list(),
+            'links' => Links::list(),
         ];
 
         return response(compact('post', 'dropdowns'));

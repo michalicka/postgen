@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Postgen\Common\Logic\Articles;
 use Postgen\Common\Logic\Images;
+use Postgen\Common\Logic\Links;
 use Postgen\Publisher\Jobs\PublishArticleJob;
 
 class Posts
@@ -119,5 +120,87 @@ class Posts
             });
 
         return true;
+    }
+
+    public static function autoLinks(Post $post): Post
+    {
+        $list = Links::list()
+            ->map(fn($link) => (object)[
+                'url' => $link['code'],
+                'options' => $link['name'],
+                'count' => count($link['name']),
+            ])
+            ->sortBy([['count', 'desc']]);
+
+        $places = [];
+        $text = str($post->content);
+        foreach ($list as $link) {
+            foreach ($link->options as $option) {
+                if (($pos = mb_stripos($text, $option)) !== false) {
+                    $places[] = (object)[
+                        'url' => $link->url,
+                        'name' => mb_substr($text, $pos, mb_strlen($option)),
+                        'start' => $pos,
+                    ];
+                    $text = $text->mask('*', $pos, mb_strlen($option));
+                    break;
+                }
+            }
+            if (count($places) >= 3) break;
+        }
+
+        foreach (collect($places)->sortBy([['start', 'desc']]) as $item) {
+            $post->content = sprintf(
+                '%s<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>%s',
+                mb_substr($post->content, 0, $item->start),
+                $item->url,
+                $item->name,
+                mb_substr($post->content, $item->start + mb_strlen($item->name))
+            );
+        }
+
+        return $post;
+    }
+
+    public static function autoTags(Post $post): Post
+    {
+        $tags = collect($post->tags)
+            ->map(fn($tag) => [
+                'name' => $tag,
+                'length' => mb_strlen($tag),
+            ])
+            ->sortBy([['length', 'desc']]);
+
+        $places = [];
+        $text = str($post->content);
+
+        preg_match_all('/<[^>]+>[^<]+<\/\w+>/', $text, $matches, PREG_OFFSET_CAPTURE);
+        foreach (array_reverse($matches) as $match) {
+            foreach (array_reverse($match) as $tag) {
+                $pos = mb_stripos($text, $tag[0]);
+                $text = $text->mask('*', $pos, mb_strlen($tag[0]));
+            }
+        }
+
+        foreach ($tags as $option) {
+            if (($pos = mb_stripos($text, $option['name'])) !== false) {
+                $places[] = (object)[
+                    'name' => mb_substr($text, $pos, mb_strlen($option['name'])),
+                    'start' => $pos,
+                ];
+                $text = $text->mask('*', $pos, mb_strlen($option['name']));
+            }
+        }
+
+        foreach (collect($places)->sortBy([['start', 'desc']]) as $item) {
+            $post->content = sprintf(
+                '%s<strong>%s</strong>%s',
+                mb_substr($post->content, 0, $item->start),
+                $item->name,
+                mb_substr($post->content, $item->start + mb_strlen($item->name))
+            );
+        }
+
+        return $post;
     }
 }

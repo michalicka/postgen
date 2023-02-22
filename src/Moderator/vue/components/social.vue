@@ -1,5 +1,5 @@
 <template>
-    <Dialog :visible="true" :style="{width: '640px'}" header="Generate social post" :modal="true" class="p-fluid" @update:visible="hideDialog">
+    <Dialog :visible="true" :style="{width: '640px'}" :header="__('Generate social post')" :modal="true" class="p-fluid" @update:visible="hideDialog">
         <div class="field flex justify-between">
             <div class="btn-group" role="group">
                 <template v-for="item in types">

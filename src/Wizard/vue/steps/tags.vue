@@ -75,7 +75,7 @@ export default {
         },
         update() {
             Vue.set(this.post, 'tags', this.result.split(',').map(
-                tag => tag.trim().replace(/\.+$/, '').replace(/^#/, '').replace('_', '').toLowerCase()
+                tag => tag.trim().replace(/\.+$/, '').replace(/^Tags: /, '').replace(/^#/, '').replace('_', '').toLowerCase()
             ));
         }
     },

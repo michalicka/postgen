@@ -78,7 +78,7 @@
                                 <Checkbox inputId="site0" name="site" :value="0" v-model="publish_to" />
                                 <label for="site0">{{ __('PostGen') }}</label>
                             </div>
-                            <div class="field-checkbox" v-for="item in sites">
+                            <div class="field-checkbox" v-for="item in dropdowns.sites">
                                 <Checkbox :inputId="`site${item.code}`" name="site" :value="item.code" v-model="publish_to" />
                                 <label :for="`site${item.code}`">{{ item.name }}</label>
                             </div>
@@ -97,7 +97,7 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label for="title" class="form-label font-bold">{{ __('Category') }}:</label><br />
-                            <Dropdown class="w-full" v-model="post.category" :options="categories" optionLabel="name" :editable="true"/>
+                            <Dropdown class="w-full" v-model="post.category" :options="dropdowns.categories" optionLabel="name" :editable="true"/>
                         </div>
                         <div class="mb-3">
                             <label for="title" class="form-label font-bold">{{ __('Image') }}:</label>
@@ -108,7 +108,8 @@
                 </div>
             </div>
 
-            <links v-model="articles" />
+            <links v-model="dropdowns.articles" />
+            <add-link v-if="addLinkDialog" :links="dropdowns.links" @input="addLink" @hide="addLinkDialog = false" />
 
         </div>
     </div>
@@ -123,9 +124,10 @@ import Editor from 'primevue/editor';
 import Chips from 'primevue/chips';
 import Checkbox from 'primevue/checkbox';
 import Links from './components/links';
+import AddLink from './components/add-link';
 
 export default {
-    components: { InputText, Button, Dropdown, Editor, Chips, Checkbox, Links },
+    components: { InputText, Button, Dropdown, Editor, Chips, Checkbox, Links, AddLink },
     props: {
         id: {
             type: Number,
@@ -135,10 +137,15 @@ export default {
     data() {
         return {
             post: {},
-            categories: [],
-            sites: [],
-            articles: [],
             publish_to: [],
+            dropdowns: {
+                sites: [],
+                articles: [],
+                categories: [],
+                links: [],
+            },
+            selection: null,
+            addLinkDialog: false,
         }
     },
     computed: {
@@ -151,11 +158,9 @@ export default {
             axios.get(`/api/posts/${this.id}/get`)
                 .then(({data}) => {
                     this.post = data.post;
-                    this.sites = data.dropdowns.sites;
-                    this.articles = data.dropdowns.articles;
-                    this.categories = data.dropdowns.categories;
+                    this.dropdowns = data.dropdowns;
                     if (this.post.published_at) this.publish_to.push(0);
-                    this.publish_to.push(..._.map(this.articles, (item) => item.site_id));
+                    this.publish_to.push(..._.map(this.dropdowns.articles, (item) => item.site_id));
                     this.post.published_at = this.post.published_at ? moment(this.post.published_at).format('YYYY-MM-DD hh:mm:ss') : '';
                     this.resize();
                 });
@@ -211,6 +216,12 @@ export default {
                 editor.style.height = (editor.scrollHeight + 10) + 'px';
             });
         },
+        addLink(url) {
+            const quill = this.$refs.content.quill;
+            quill.theme.tooltip.edit('link', url);
+            quill.theme.tooltip.save();
+            this.addLinkDialog = false;
+        }
     },
     mounted() {
         this.loadData();
@@ -220,6 +231,15 @@ export default {
                 this.resize();
             });
             document.querySelector('.p-chips .p-inputtext').style.width = "100%";
+
+            document.querySelector('.ql-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                const quill = this.$refs.content.quill;
+                this.selection = quill.getSelection(true);
+                if (this.selection && this.selection.length) {
+                    this.addLinkDialog = true;
+                }
+            });
         });
     }
 }

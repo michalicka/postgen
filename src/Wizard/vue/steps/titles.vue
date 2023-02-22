@@ -71,7 +71,10 @@ export default {
                 });
         },
         parse() {
-            this.result = this.content.split("\n").map(item => item.replace(/^\d+\.\s/, ""));
+            this.result = this.content
+                .split("\n")
+                .map(item => item.replace(/^\d+\.\s/, ""))
+                .filter(item => item.length > 3);
         },
         select(title) {
             this.post.title = title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();
