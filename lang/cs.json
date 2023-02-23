@@ -97,5 +97,9 @@
     "Loading sites data. Please wait.": "Nahrávám web stránky. Čekejte prosím.",
     "Generate social post": "Příspěvek na sociální sítě",
     "Insert link": "Vložit odkaz",
-    "Insert": "Vložit"
+    "Insert": "Vložit",
+    "Regenerate": "Znovu vygenerovat",
+    "Copy to clipboard": "Zkopírovat do schránky",
+    "Text copied": "Text zkopírován do schránky",
+    "Cannot copy text": "Text nelze zkopírovat do schránky"
 }

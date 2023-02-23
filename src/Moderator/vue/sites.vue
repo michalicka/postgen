@@ -6,7 +6,7 @@
 
                     <admin-menu />
 
-                    <DataTable :value="sites" editMode="row" dataKey="id" :editingRows="editingRows" @row-edit-save="onRowEditSave" class="p-datatable-sm mt-4" stripedRows responsiveLayout="scroll">
+                    <DataTable :value="sites" editMode="row" dataKey="id" :editingRows="editingRows" @row-edit-save="onRowEditSave" class="p-datatable-sm mt-4" stripedRows responsiveLayout="scroll" :loading="loading">
                         <template #empty>
                             {{ __('No sites found.') }}
                         </template>
@@ -76,6 +76,7 @@ export default {
     components: { Button, InputText, DataTable, Column, AdminMenu },
     data() {
         return {
+            loading: false,
             editingRows: [],
             selected: null,
             sites: [],
@@ -95,9 +96,13 @@ export default {
     },
     methods: {
         loadData() {
+            this.loading = true;
             axios.get('/api/sites/list')
             .then(({data}) => {
                 this.sites = data;
+            })
+            .finally(() => {
+                this.loading = false;
             });
         },
         add() {

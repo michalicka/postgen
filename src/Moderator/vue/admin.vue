@@ -23,7 +23,7 @@
                         </div>
                     </div>
 
-                    <DataTable :value="posts" class="p-datatable-sm mt-4" stripedRows responsiveLayout="scroll">
+                    <DataTable :value="posts" class="p-datatable-sm mt-4" stripedRows responsiveLayout="scroll" :loading="loading">
                         <template #empty>
                             {{ __('No posts found.') }}
                         </template>
@@ -99,6 +99,7 @@ export default {
     components: { DataTable, Column, Badge, SearchIcon, PrevIcon, NextIcon, LikeIcon, DislikeIcon, AdminMenu },
     data() {
         return {
+            loading: false,
             posts: [],
             filters: {
                 status: '',
@@ -110,11 +111,15 @@ export default {
     },
     methods: {
         loadData() {
+            this.loading = true;
             axios.get('/api/posts/list', { params: this.filters })
             .then(({data}) => {
                 this.posts = data.data;
                 this.filters.page = data.current_page;
                 this.lastPage = data.last_page;
+            })
+            .finally(() => {
+                this.loading = false;
             });
         },
         editLink(post) {

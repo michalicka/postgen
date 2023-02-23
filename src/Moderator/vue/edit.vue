@@ -63,7 +63,7 @@
                             <a class="no-underline" href="/admin">
                                 <Button :label="__('Back')" icon="pi pi-angle-double-left" iconPos="left" class="p-button-secondary" />
                             </a>
-                            <button type="button" class="btn btn-primary" @click="update">{{ __('Update') }}</button>
+                            <Button :label="__('Update')" class="p-button-primary bg-blue-600" :loading="loading" @click="update" />
                         </div>
                     </div>
                 </div>
@@ -88,8 +88,8 @@
                             <input type="datetime-local" class="form-control" v-model="post.published_at">
                         </div>
                         <div class="flex justify-between w-full">
-                            <button type="button" class="btn btn-danger" @click="remove">{{ __('Delete') }}</button>
-                            <button v-if="publish_to.length" type="button" class="btn btn-success" @click="publish">{{ __('Publish') }}</button>
+                            <Button :label="__('Delete')" class="p-button-danger" :loading="loading" @click="remove" />
+                            <Button v-if="publish_to.length" :label="__('Publish')" class="p-button-success" :loading="loading" @click="publish" />
                         </div>
                     </div>
                 </div>
@@ -136,6 +136,7 @@ export default {
     },
     data() {
         return {
+            loading: true,
             post: {},
             publish_to: [],
             dropdowns: {
@@ -155,6 +156,7 @@ export default {
     },
     methods: {
         loadData() {
+            this.loading = true;
             axios.get(`/api/posts/${this.id}/get`)
                 .then(({data}) => {
                     this.post = data.post;
@@ -163,9 +165,11 @@ export default {
                     this.publish_to.push(..._.map(this.dropdowns.articles, (item) => item.site_id));
                     this.post.published_at = this.post.published_at ? moment(this.post.published_at).format('YYYY-MM-DD hh:mm:ss') : '';
                     this.resize();
-                });
+                })
+                .finally(() => { this.loading = false });
         },
         update() {
+            this.loading = true;
             axios.post(`/api/posts/${this.id}/update`, {
                     category: this.post.category,
                     title: this.post.title,
@@ -178,16 +182,20 @@ export default {
                 .then(({data}) => {
                     this.$toast.success(this.__('Post updated'));
                     this.loadData();
-                });
+                })
+                .finally(() => { this.loading = false });
         },
         remove() {
+            this.loading = true;
             axios.post(`/api/posts/${this.id}/remove`)
                 .then(({data}) => {
                     this.$toast.success(this.__('Post removed'));
                     window.location = '/admin';
-                });
+                })
+                .finally(() => { this.loading = false });
         },
         publish() {
+            this.loading = true;
             axios.post(`/api/posts/${this.id}/publish`, {
                     category: this.post.category,
                     title: this.post.title,
@@ -201,7 +209,8 @@ export default {
                 .then(({data}) => {
                     this.$toast.success(this.__('Post published'));
                     this.loadData();
-                });
+                })
+                .finally(() => { this.loading = false });
         },
         formatDate(date) {
             return moment(date);

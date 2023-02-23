@@ -7,7 +7,10 @@
                     <label class="btn btn-outline-primary" :for="`type_${item.code}`" @click="updateType(item.code)">{{ __(item.name) }}</label>
                 </template>
             </div>
-            <Button icon="pi pi-refresh" class="p-button-sm p-button-secondary" @click="refresh"/>
+            <span class="p-buttonset">
+                <Button icon="pi pi-copy" class="p-button-sm p-button-primary bg-blue-600" :title="__('Copy to clipboard')" @click="copyToClipboard"/>
+                <Button icon="pi pi-refresh" class="p-button-sm p-button-primary bg-blue-600" :title="__('Regenerate')" @click="refresh"/>
+            </span>
         </div>
         <div v-if="type" class="mt-2">
             <textarea ref="sharing" id="sharing" :style="style" class="form-control" v-model="content" @keyup="resize"></textarea>
@@ -115,6 +118,14 @@ export default {
                 this.data[this.type] = this.content;
                 this.hideDialog();
             });
+        },
+        async copyToClipboard() {
+            try {
+                await navigator.clipboard.writeText(this.content);
+                this.$toast.success(this.__('Text copied'));
+            } catch($e) {
+                this.$toast.danger(this.__('Cannot copy text'));
+            }
         }
     },
     mounted() {

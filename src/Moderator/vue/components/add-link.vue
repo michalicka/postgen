@@ -2,6 +2,9 @@
     <Dialog :visible="true" :style="{width: '640px'}" :header="__('Insert link')" :modal="true" class="p-fluid" @update:visible="hideDialog">
         <div class="h-80">
             <Dropdown ref="input" v-model="link" :options="links" optionLabel="code" :editable="true" :filter="true" :showClear="true">
+                <template #indicator>
+                    <span id="selectLinkOverlay" class="p-dropdown-trigger-icon pi pi-chevron-down"></span>
+                </template>
                 <template #option="slotProps">
                     <div class="text-sm flex flex-col">
                         <div class="font-bold">{{display(slotProps.option.name)}}</div>
@@ -43,7 +46,12 @@ export default {
         },
         submit(item) {
             this.$emit('input', this.link.code || this.link);
-        }
+        },
     },
+    mounted() {
+        this.$nextTick(() => {
+            document.querySelector('.p-dialog .p-inputtext').focus();
+        });
+    }
 }
 </script>
