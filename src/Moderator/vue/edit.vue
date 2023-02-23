@@ -152,6 +152,17 @@ export default {
     computed: {
         hostname() {
             return window.location.origin;
+        },
+        params() {
+            return {
+                category: this.post.category.hasOwnProperty('name') ? this.post.category.name : this.post.category,
+                title: this.post.title,
+                slug: this.post.slug,
+                content: this.post.content,
+                published_at: this.post.published_at,
+                tags: this.post.tags,
+                image: this.post.image,
+            };
         }
     },
     methods: {
@@ -170,15 +181,7 @@ export default {
         },
         update() {
             this.loading = true;
-            axios.post(`/api/posts/${this.id}/update`, {
-                    category: this.post.category,
-                    title: this.post.title,
-                    slug: this.post.slug,
-                    content: this.post.content,
-                    published_at: this.post.published_at,
-                    tags: this.post.tags,
-                    image: this.post.image,
-                })
+            axios.post(`/api/posts/${this.id}/update`, this.params)
                 .then(({data}) => {
                     this.$toast.success(this.__('Post updated'));
                     this.loadData();
@@ -196,16 +199,7 @@ export default {
         },
         publish() {
             this.loading = true;
-            axios.post(`/api/posts/${this.id}/publish`, {
-                    category: this.post.category,
-                    title: this.post.title,
-                    slug: this.post.slug,
-                    content: this.post.content,
-                    published_at: this.post.published_at,
-                    tags: this.post.tags,
-                    image: this.post.image,
-                    publish_to: this.publish_to,
-                })
+            axios.post(`/api/posts/${this.id}/publish`, _.assign(this.params, { publish_to: this.publish_to }))
                 .then(({data}) => {
                     this.$toast.success(this.__('Post published'));
                     this.loadData();
@@ -216,7 +210,27 @@ export default {
             return moment(date);
         },
         preview() {
-            window.open(`/posts/${this.post.id}/preview`);
+            let form = document.createElement("form");
+            form.setAttribute("method", "post");
+            form.setAttribute("action", `/posts/${this.post.id}/preview`);
+            form.setAttribute("target", `postgen-preview`);
+            let input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = '_token';
+            input.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            form.appendChild(input);
+            for (const i in this.params) {
+                if (this.params.hasOwnProperty(i)) {
+                    input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = i;
+                    input.value = this.params[i];
+                    form.appendChild(input);
+                }
+            }
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
         },
         resize() {
             this.$nextTick(() => {
@@ -230,7 +244,7 @@ export default {
             quill.theme.tooltip.edit('link', url);
             quill.theme.tooltip.save();
             this.addLinkDialog = false;
-        }
+        },
     },
     mounted() {
         this.loadData();

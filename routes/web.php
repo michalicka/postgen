@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
     Route::get('/posts/{id}/edit', [Postgen\Moderator\Controllers\PostController::class, 'edit'])->name('posts.edit');
     Route::get('/posts/{id}/preview', [Postgen\Moderator\Controllers\PostController::class, 'preview'])->name('posts.preview');
+    Route::post('/posts/{id}/preview', [Postgen\Moderator\Controllers\PostController::class, 'preview'])->name('posts.preview');
 
     Route::get('/wizard', [Postgen\Wizard\Controllers\WizardController::class, 'index'])->name('wizard.index');
     Route::get('/sites', [App\Http\Controllers\AdminController::class, 'sites'])->name('admin.sites');

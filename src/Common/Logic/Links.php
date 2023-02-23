@@ -32,8 +32,9 @@ class Links
         ->map(fn($group, $link) => [
             'code' => $link,
             'name' => $group->pluck('name')->unique()->values(),
+            'count' => $group->count(),
         ])
-        ->sort()
+        ->sortBy([['count', 'desc']])
         ->values();
     }
 

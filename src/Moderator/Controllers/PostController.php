@@ -36,6 +36,17 @@ class PostController extends Controller
 
         if (!$post) abort(403);
 
+        $category = request('category', $post->category);
+        $tags = request('tags', $post->tags);
+
+        $post->title = request('title', $post->title);
+        $post->slug = request('slug', $post->slug);
+        $post->content = request('content', $post->content);
+        $post->category = is_array($category) ? $category['name'] : $category;
+        $post->tags = array_map(fn($tag) => trim($tag), is_array($tags) ? $tags : explode(',', $tags));
+        $post->published_at = request('published_at', $post->published_at);
+        $post->image = request('image', $post->image);
+
         $months = Months::list();
         $categories = Categories::list();
 
