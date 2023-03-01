@@ -3,8 +3,9 @@ async function *parseJsonStream(readableStream) {
     for await (const line of readLines(readableStream.getReader())) {
         let trimmedLine = line.trim().replace(/,$/, '');
         trimmedLine = regexp.test(trimmedLine) ? trimmedLine.match(regexp)[0] : trimmedLine;
-
-        if (trimmedLine !== '[]' && trimmedLine !== '\n') {
+        if (trimmedLine === 'data: [DONE]') {
+            yield [];
+        } else if (trimmedLine !== '[]' && trimmedLine !== '\n') {
             try {
                 yield JSON.parse(trimmedLine);
             } catch (e) {

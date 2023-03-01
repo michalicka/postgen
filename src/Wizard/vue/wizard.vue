@@ -6,7 +6,7 @@
                 <post v-if="post.title" v-model="post" @input="(v) => post.content = v" />
                 <tags v-if="post.content" v-model="post" />
                 <category v-if="post.tags.length" v-model="post" :options="categories" />
-                <cover v-if="post.tags.length" v-model="post" />
+                <cover v-if="post.tags.length && post.tags[0]" v-model="post" />
                 <store v-if="post.tags.length" v-model="post" />
             </div>
         </div>

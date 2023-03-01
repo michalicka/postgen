@@ -112,6 +112,7 @@ export default {
             this.$emit('hide');
         },
         store() {
+            this.copyToClipboard();
             axios.post(`/api/articles/${this.data.id}/social/${this.type}/store`, {
                 content: this.content,
             }).then(({data}) => {

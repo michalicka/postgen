@@ -10,7 +10,7 @@
                     </template>
                 </div>
             </div>
-            <div v-if="size" class="mt-2">
+            <div class="mt-2">
                 <textarea ref="content" id="content" :style="style" class="form-control" v-model="post.content" @keydown="resize"></textarea>
             </div>
         </div>

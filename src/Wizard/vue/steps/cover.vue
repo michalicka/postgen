@@ -45,6 +45,13 @@ export default {
             list: [],
         }
     },
+    watch: {
+        'value.tags': {
+            handler(value) {
+                this.search = _.first(value);
+            },
+        }
+    },
     methods: {
         submit() {
             if (this.search && !this.running) {
