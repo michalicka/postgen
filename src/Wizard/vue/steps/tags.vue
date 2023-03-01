@@ -64,7 +64,7 @@ export default {
                     for await (const chunk of this.parseJsonStream(response.body)) {
                         this.model = chunk.model || '';
                         if (!Array.isArray(chunk) && !chunk.choices[0].finish_reason) {
-                            this.result = `${this.result}${chunk.choices[0].text || ''}`.trimStart();
+                            this.result = `${this.result}${chunk.choices[0].delta.content || chunk.choices[0].text || ''}`.trimStart();
                             this.update();
                         } else {
                             this.running = false;

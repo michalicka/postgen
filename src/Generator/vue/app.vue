@@ -71,7 +71,7 @@ export default {
                     for await (const chunk of this.parseJsonStream(response.body)) {
                         this.model = chunk.model || '';
                         if (!Array.isArray(chunk) && !chunk.choices[0].finish_reason) {
-                            this.append(chunk.choices[0].text || '');
+                            this.append(chunk.choices[0].delta.content || chunk.choices[0].text || '');
                         } else {
                             this.store();
                         }
