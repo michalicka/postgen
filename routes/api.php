@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/faker', [Postgen\Api\Controllers\FakerController::class, 'index'])->name('api.faker');
+Route::get('/gpt/faker', [Postgen\Api\Controllers\GptApiController::class, 'faker'])->name('api.gpt.faker');
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/posts/list', [Postgen\Api\Controllers\PostApiController::class, 'list'])->name('api.posts.list');

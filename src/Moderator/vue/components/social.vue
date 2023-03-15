@@ -102,8 +102,10 @@ export default {
         },
         addLink() {
             const regexp = /https?:\/\/[\n\S]+/g;
-            this.content = this.content.replace(regexp, "👉 " + this.data.link);
-            if (!regexp.test(this.content)) this.content = this.content.replace("#", "👉 " + this.data.link + " #");
+            this.content = this.content.replace(regexp, this.data.link);
+            if (!regexp.test(this.content)) this.content = this.content.replace("#", this.data.link + " #");
+            if (!this.content.includes("👉")) this.content = this.content.replace(regexp, "👉 " + this.data.link);
+            this.content = this.content.replace(/^[\"]/, '').replace(/[\"]$/, '');
             this.$nextTick(() => {
                 this.resize();
             });
