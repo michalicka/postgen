@@ -101,5 +101,8 @@
     "Regenerate": "Znovu vygenerovat",
     "Copy to clipboard": "Zkopírovat do schránky",
     "Text copied": "Text zkopírován do schránky",
-    "Cannot copy text": "Text nelze zkopírovat do schránky"
+    "Cannot copy text": "Text nelze zkopírovat do schránky",
+    "Generate google ads": "Text pro Google Ads",
+    "Article content is:\n\n:content\n\n---\n\nFor the above article text write:\n- 2 engaging ad copy for Google Ads in RSA (Responsive Search Ads) format\n- each ad contains 5 headlines (each headline has a maximum of 30 characters)\n- each ad contains 4 descriptions (each description has a maximum of 90 characters)\n- headline text of each ad contains words from artitle title \":title\"": "Text článku je:\n\n:content\n\n---\n\nPro výše uvedený článek napiš:\n- 2 poutavé texty reklamy Google Ads v RSA (Responsive Search Ads) formátu\n- každá reklama obsahuje 5 nadpisů (každý nadpis má maximálně 30 znaků)\n- každá reklama obsahuje 4 popisky (každý popisek má maximálně 90 znaků)\n- text každého nadpisu reklamy obsahuje slova z názvu článku \":title\"",
+    "Texts": "Texty"
 }

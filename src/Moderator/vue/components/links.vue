@@ -17,12 +17,14 @@
                     <div class="flex space-x-2 flex-nowrap">
                         <Button type="button" icon="pi pi-twitter" @click="editSocial(data, 'twitter')"></Button>
                         <Button type="button" icon="pi pi-facebook" @click="editSocial(data, 'facebook')"></Button>
+                        <Button type="button" icon="pi pi-google" @click="editAdWords(data)"></Button>
                     </div>
                 </template>
             </Column>
         </DataTable>
 
         <social v-if="socialDialog" v-model="socialDialog" :site="socialSite" @hide="socialDialog = false" />
+        <adwords v-if="adwordsDialog" v-model="adwordsDialog" site="adwords" @hide="adwordsDialog = false" />
     </div>
 </template>
 <script>
@@ -31,25 +33,30 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Social from './social';
+import Adwords from './adwords';
 
 export default {
-    components: { DataTable, Column, Button, Social },
+    components: { DataTable, Column, Button, Social, Adwords },
     props: {
         value: {
             type: Array,
             required: true,
-        }
+        },
     },
     data() {
         return {
             socialDialog: false,
             socialSite: null,
+            adwordsDialog: false,
         }
     },
     methods: {
         editSocial(data, site) {
             this.socialDialog = data;
             this.socialSite = site;
+        },
+        editAdWords(data) {
+            this.adwordsDialog = data;
         },
         formatDate(date) {
             return moment(date).fromNow();

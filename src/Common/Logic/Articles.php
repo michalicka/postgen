@@ -10,7 +10,7 @@ class Articles
 {
     public static function list(int $postId): Collection
     {
-        return Article::select(['id', 'site_id', 'title', 'link', 'twitter', 'facebook', 'published_at'])
+        return Article::select(['id', 'site_id', 'title', 'content', 'link', 'twitter', 'facebook', 'adwords', 'published_at'])
             ->where('user_id', auth()->id())
             ->where('post_id', $postId)
             ->orderBy('published_at', 'desc')
